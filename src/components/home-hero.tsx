@@ -25,17 +25,17 @@ const slides = [
     href: "/collections/bed-sheets",
     action: "Meet the collection",
   },
-  {
-    type: "video" as const,
-    src: "https://www.brooklinen.com/cdn/shop/videos/c/vp/b3faa0fde0ed4113b2e8cbe4d4329b4e/b3faa0fde0ed4113b2e8cbe4d4329b4e.HD-1080p-7.2Mbps-90384934.mp4?v=0",
-    poster: "https://www.brooklinen.com/cdn/shop/files/preview_images/b3faa0fde0ed4113b2e8cbe4d4329b4e.thumbnail.0000000000_1100x.jpg?v=1785450680",
-    alt: "Soft bedding moving in natural light",
-    eyebrow: "The everyday ritual",
-    title: "Make room for better rest.",
-    body: "Considered comfort for slower mornings, earlier nights, and every quiet moment between.",
-    href: "/collections/bundles",
-    action: "Build your sanctuary",
-  },
+  // {
+  //   type: "video" as const,
+  //   src: "https://www.brooklinen.com/cdn/shop/videos/c/vp/b3faa0fde0ed4113b2e8cbe4d4329b4e/b3faa0fde0ed4113b2e8cbe4d4329b4e.HD-1080p-7.2Mbps-90384934.mp4?v=0",
+  //   poster: "https://www.brooklinen.com/cdn/shop/files/preview_images/b3faa0fde0ed4113b2e8cbe4d4329b4e.thumbnail.0000000000_1100x.jpg?v=1785450680",
+  //   alt: "Soft bedding moving in natural light",
+  //   eyebrow: "The everyday ritual",
+  //   title: "Make room for better rest.",
+  //   body: "Considered comfort for slower mornings, earlier nights, and every quiet moment between.",
+  //   href: "/collections/bundles",
+  //   action: "Build your sanctuary",
+  // },
 ];
 
 export function HomeHero() {
@@ -43,14 +43,20 @@ export function HomeHero() {
   const videos = useRef<Array<HTMLVideoElement | null>>([]);
 
   useEffect(() => {
-    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
     videos.current.forEach((video, index) => {
       if (!video) return;
-      if (index === active && !reduceMotion) void video.play().catch(() => undefined);
+      if (index === active && !reduceMotion)
+        void video.play().catch(() => undefined);
       else video.pause();
     });
     if (reduceMotion) return;
-    const timer = window.setTimeout(() => setActive((current) => (current + 1) % slides.length), 6500);
+    const timer = window.setTimeout(
+      () => setActive((current) => (current + 1) % slides.length),
+      6500,
+    );
     return () => window.clearTimeout(timer);
   }, [active]);
 
@@ -59,21 +65,83 @@ export function HomeHero() {
   }
 
   return (
-    <section className="home-hero" aria-roledescription="carousel" aria-label="Featured collections">
+    <section
+      className="home-hero"
+      aria-roledescription="carousel"
+      aria-label="Featured collections"
+    >
       {slides.map((slide, index) => (
-        <article className={`home-hero-slide ${index === active ? "is-active" : ""}`} aria-hidden={index !== active} key={slide.title}>
-          {slide.type === "image" ? <Image src={slide.src} alt={slide.alt} fill loading="eager" fetchPriority={index === 0 ? "high" : "auto"} sizes="100vw" /> : <video ref={(node) => { videos.current[index] = node; }} muted loop playsInline preload="metadata" poster={slide.poster} aria-label={slide.alt}><source src={slide.src} type="video/mp4" /></video>}
+        <article
+          className={`home-hero-slide ${index === active ? "is-active" : ""}`}
+          aria-hidden={index !== active}
+          key={slide.title}
+        >
+          <Image
+            src={slide.src}
+            alt={slide.alt}
+            fill
+            loading="eager"
+            fetchPriority={index === 0 ? "high" : "auto"}
+            sizes="100vw"
+          />
+
+          {/* {slide.type === "image" ? (
+            <Image
+              src={slide.src}
+              alt={slide.alt}
+              fill
+              loading="eager"
+              fetchPriority={index === 0 ? "high" : "auto"}
+              sizes="100vw"
+            />
+          ) : (
+            <video
+              ref={(node) => {
+                videos.current[index] = node;
+              }}
+              muted
+              loop
+              playsInline
+              preload="metadata"
+              poster={slide.poster}
+              aria-label={slide.alt}
+            >
+              <source src={slide.src} type="video/mp4" />
+            </video>
+          )} */}
           <div className="home-hero__wash" />
           <div className="home-hero__content">
             <span className="eyebrow eyebrow--light">{slide.eyebrow}</span>
             {index === 0 ? <h1>{slide.title}</h1> : <h2>{slide.title}</h2>}
             <p>{slide.body}</p>
-            <div className="hero-actions"><Link className="button button-light" href={slide.href}>{slide.action}</Link><Link className="button button-outline-light" href="/collections/bundles">Save with bundles</Link></div>
+            <div className="hero-actions">
+              <Link className="button button-light" href={slide.href}>
+                {slide.action}
+              </Link>
+              <Link
+                className="button button-outline-light"
+                href="/collections/bundles"
+              >
+                Save with bundles
+              </Link>
+            </div>
           </div>
         </article>
       ))}
       <div className="hero-controls">
-        <div role="tablist" aria-label="Choose a hero slide">{slides.map((slide, index) => <button type="button" className={index === active ? "is-active" : ""} onClick={() => show(index)} aria-label={`Show ${slide.title}`} aria-selected={index === active} role="tab" key={slide.title} />)}</div>
+        <div role="tablist" aria-label="Choose a hero slide">
+          {slides.map((slide, index) => (
+            <button
+              type="button"
+              className={index === active ? "is-active" : ""}
+              onClick={() => show(index)}
+              aria-label={`Show ${slide.title}`}
+              aria-selected={index === active}
+              role="tab"
+              key={slide.title}
+            />
+          ))}
+        </div>
       </div>
     </section>
   );
