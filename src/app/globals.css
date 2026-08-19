@@ -2895,7 +2895,6 @@ h2 em {
     grid-auto-columns: 74vw;
   }
   .spotlight-grid {
-    margin-right: -20px;
     display: flex;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
@@ -3889,7 +3888,7 @@ h2 em {
 }
 .collection-tabs--visual a.active {
   border-width: 4px;
-  border-color: var(--sage);
+  border-color: var(--navy);
   color: white;
 }
 .collection-tabs--visual span {
@@ -4996,7 +4995,7 @@ h2 em {
     serif;
 }
 .bed-builder__panel {
-  min-height: 760px;
+  height: fit-content;
   padding: clamp(27px, 3.4vw, 49px);
   display: flex;
   flex-direction: column;
@@ -5057,7 +5056,7 @@ h2 em {
   border-color: #9ca793;
 }
 .bed-builder__stage {
-  min-height: 510px;
+  height: fit-content;
   padding: 45px 0 35px;
   animation: builder-in 0.35s ease both;
 }
@@ -5431,7 +5430,6 @@ h2 em {
     grid-template-columns: 1fr;
   }
   .bed-builder__panel {
-    min-height: 690px;
     padding: 23px 18px;
   }
   .bed-builder__steps button {
@@ -5442,7 +5440,7 @@ h2 em {
     display: none;
   }
   .bed-builder__stage {
-    min-height: 500px;
+    height: fit-content;
     padding-top: 34px;
   }
   .bed-builder__stage legend strong {
@@ -5454,7 +5452,6 @@ h2 em {
     grid-template-columns: 1fr;
   }
   .bed-builder__size-grid {
-    max-height: 360px;
     overflow-y: auto;
   }
   .bed-builder__size-grid button {
