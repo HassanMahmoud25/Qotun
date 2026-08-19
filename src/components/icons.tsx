@@ -63,6 +63,12 @@ export const PlusIcon = (p: IconProps) => (
     <path d="M12 5v14M5 12h14" />
   </Icon>
 );
+export const ViewIcon = (p: IconProps) => (
+  <Icon {...p}>
+    <path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z" />
+    <circle cx="12" cy="12" r="2.5" />
+  </Icon>
+);
 export const MinusIcon = (p: IconProps) => (
   <Icon {...p}>
     <path d="M5 12h14" />
