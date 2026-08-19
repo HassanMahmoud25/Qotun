@@ -1288,6 +1288,7 @@ h2 em {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 8px;
+  position: sticky; top: 85;
 }
 .product-thumbs button {
   aspect-ratio: 1;
