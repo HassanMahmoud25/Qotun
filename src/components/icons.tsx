@@ -55,7 +55,14 @@ export const CloseIcon = (p: IconProps) => (
 );
 export const ArrowIcon = (p: IconProps) => (
   <Icon {...p}>
-    <path d="M4 12h15M14 6l6 6-6 6" />
+    <path
+      d="M5 12h14M13 6l6 6-6 6"
+      fill="none"
+      stroke="#283455"
+      strokeWidth="2.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
   </Icon>
 );
 export const PlusIcon = (p: IconProps) => (
@@ -64,7 +71,7 @@ export const PlusIcon = (p: IconProps) => (
   </Icon>
 );
 export const ViewIcon = (p: IconProps) => (
-  <Icon {...p}>
+  <Icon {...p} className="min-w-4.5 h-auto">
     <path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z" />
     <circle cx="12" cy="12" r="2.5" />
   </Icon>
@@ -82,5 +89,17 @@ export const HeartIcon = (p: IconProps) => (
 export const CheckIcon = (p: IconProps) => (
   <Icon {...p}>
     <path d="m5 12 4 4L19 6" />
+  </Icon>
+);
+export const ChevronIcon = (p: IconProps) => (
+  <Icon {...p}>
+    <path
+      d="M9 5l7 7-7 7"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
   </Icon>
 );

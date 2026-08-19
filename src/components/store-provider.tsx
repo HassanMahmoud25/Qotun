@@ -156,6 +156,11 @@ function QuickViewDialog({ product }: { product: Product }) {
   const [colour, setColour] = useState(colours[0].name);
   const [quantity, setQuantity] = useState(1);
   const [saved, setSaved] = useState(false);
+  const [isZoomed, setIsZoomed] = useState(false);
+  const [zoomPosition, setZoomPosition] = useState({
+    x: 50,
+    y: 50,
+  });
 
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
@@ -169,6 +174,42 @@ function QuickViewDialog({ product }: { product: Product }) {
     setQuickView(null);
     add(product.slug, quantity, { size, colour });
   }
+
+  const handleZoomClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    const rect = event.currentTarget.getBoundingClientRect();
+
+    const x = ((event.clientX - rect.left) / rect.width) * 100;
+    const y = ((event.clientY - rect.top) / rect.height) * 100;
+
+    setZoomPosition({ x, y });
+    setIsZoomed((prev) => !prev);
+  };
+
+  const handleZoomMove = (event: React.MouseEvent<HTMLDivElement>) => {
+    if (!isZoomed) return;
+
+    const rect = event.currentTarget.getBoundingClientRect();
+
+    const x = ((event.clientX - rect.left) / rect.width) * 100;
+    const y = ((event.clientY - rect.top) / rect.height) * 100;
+
+    setZoomPosition({ x, y });
+  };
+
+  const handlePrevious = () => {
+    setIsZoomed(false);
+    setImageIndex((imageIndex - 1 + gallery.length) % gallery.length);
+  };
+
+  const handleNext = () => {
+    setIsZoomed(false);
+    setImageIndex((imageIndex + 1) % gallery.length);
+  };
+
+  const handleSmallImgClick = (index: number) => {
+    setIsZoomed(false);
+    setImageIndex(index);
+  };
 
   return (
     <>
@@ -191,6 +232,7 @@ function QuickViewDialog({ product }: { product: Product }) {
         >
           <CloseIcon />
         </button>
+
         <div className="quick-view__gallery">
           <div className="quick-view__main-image">
             <div
@@ -198,46 +240,50 @@ function QuickViewDialog({ product }: { product: Product }) {
               style={{ transform: `translate3d(-${imageIndex * 100}%, 0, 0)` }}
             >
               {gallery.map((image, index) => (
-                <div className="quick-view__slide" key={image}>
+                <div
+                  key={image}
+                  className={`quick-view__slide ${
+                    imageIndex && isZoomed ? "is-zoomed" : ""
+                  }`}
+                  onClick={handleZoomClick}
+                  onMouseMove={handleZoomMove}
+                >
                   <Image
                     src={image}
                     alt={`${product.name} view ${index + 1}`}
                     fill
                     sizes="(max-width: 800px) 100vw, 55vw"
                     priority={index === 0}
+                    style={{
+                      transform: isZoomed ? "scale(2.5)" : "scale(1)",
+                      transformOrigin: `${zoomPosition.x}% ${zoomPosition.y}%`,
+                    }}
                   />
                 </div>
               ))}
             </div>
+
             {gallery.length > 1 && (
               <div className="quick-view__image-controls">
                 <button
                   className="quick-view__previous"
-                  onClick={() =>
-                    setImageIndex(
-                      (imageIndex - 1 + gallery.length) % gallery.length,
-                    )
-                  }
+                  onClick={handlePrevious}
                   aria-label="Previous image"
                 >
                   <ArrowIcon size={22} />
                 </button>
-                <button
-                  onClick={() =>
-                    setImageIndex((imageIndex + 1) % gallery.length)
-                  }
-                  aria-label="Next image"
-                >
+                <button onClick={handleNext} aria-label="Next image">
                   <ArrowIcon size={22} />
                 </button>
               </div>
             )}
           </div>
+
           <div className="quick-view__thumbnails" aria-label="Product images">
             {gallery.slice(0, 4).map((image, index) => (
               <button
                 className={imageIndex === index ? "active" : ""}
-                onClick={() => setImageIndex(index)}
+                onClick={() => handleSmallImgClick(index)}
                 key={image}
                 aria-label={`Show image ${index + 1}`}
               >
@@ -246,6 +292,7 @@ function QuickViewDialog({ product }: { product: Product }) {
             ))}
           </div>
         </div>
+
         <div className="quick-view__details">
           <span className="eyebrow">Qotun · {product.category}</span>
           <h2>{product.name}</h2>

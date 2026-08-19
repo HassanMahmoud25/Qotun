@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowIcon, CheckIcon } from "@/components/icons";
+import { ArrowIcon, CheckIcon, ChevronIcon } from "@/components/icons";
 import { HomeHero } from "@/components/home-hero";
 import { ProductCard } from "@/components/product-card";
 import { editorial, products } from "@/lib/data";
@@ -88,8 +88,13 @@ export default function HomePage() {
             <h2>Shop by Category</h2>
           </div>
           <div className="section-arrows">
-            <button aria-label="Previous category">←</button>
-            <button aria-label="Next category">→</button>
+            <button aria-label="Previous category">
+              <ChevronIcon size={28} className="rotate-180" />
+            </button>
+
+            <button aria-label="Next category">
+              <ChevronIcon size={28} />
+            </button>
           </div>
         </div>
         <div className="category-rail">

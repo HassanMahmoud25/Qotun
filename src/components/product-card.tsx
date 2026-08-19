@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import { ArrowIcon, HeartIcon, PlusIcon, ViewIcon } from "@/components/icons";
+import { ArrowIcon, HeartIcon, ViewIcon } from "@/components/icons";
 import { useStore } from "@/components/store-provider";
 import { formatPrice, type Product } from "@/lib/data";
 
@@ -62,7 +62,7 @@ export function ProductCard({
           onClick={() => setQuickView(product.slug)}
           aria-label={`Quick view ${product.name}`}
         >
-          <ViewIcon size={17} />
+          <ViewIcon size={18} />
           <span>Quick view</span>
         </button>
       </div>

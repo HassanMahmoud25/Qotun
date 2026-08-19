@@ -13,6 +13,11 @@ export function ProductDetail({ product }: { product: Product }) {
   const [colour, setColour] = useState("Hotel White");
   const [quantity, setQuantity] = useState(1);
   const [saved, setSaved] = useState(false);
+  const [isZoomed, setIsZoomed] = useState(false);
+  const [zoomPosition, setZoomPosition] = useState({
+    x: 50,
+    y: 50,
+  });
   const images = [...product.gallery, product.image].filter(
     (image, index, gallery) => gallery.indexOf(image) === index,
   );
@@ -26,42 +31,96 @@ export function ProductDetail({ product }: { product: Product }) {
     { name: "Midnight", value: "#2d3858" },
   ];
 
+  const handleZoomClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    const rect = event.currentTarget.getBoundingClientRect();
+
+    const x = ((event.clientX - rect.left) / rect.width) * 100;
+    const y = ((event.clientY - rect.top) / rect.height) * 100;
+
+    setZoomPosition({ x, y });
+    setIsZoomed((prev) => !prev);
+  };
+
+  const handleZoomMove = (event: React.MouseEvent<HTMLDivElement>) => {
+    if (!isZoomed) return;
+
+    const rect = event.currentTarget.getBoundingClientRect();
+
+    const x = ((event.clientX - rect.left) / rect.width) * 100;
+    const y = ((event.clientY - rect.top) / rect.height) * 100;
+
+    setZoomPosition({ x, y });
+  };
+
+  const handlePrevious = () => {
+    setIsZoomed(false);
+    setActive((active - 1 + images.length) % images.length);
+  };
+
+  const handleNext = () => {
+    setIsZoomed(false);
+    setActive((active + 1) % images.length);
+  };
+
+  const handleSmallImgClick = (index: number) => {
+    setIsZoomed(false);
+    setActive(index);
+  };
+
   return (
     <div className="product-detail">
       <div className="product-gallery reveal">
         <div className="product-gallery__main">
           <div
             className="product-gallery__slider"
-            style={{ transform: `translate3d(-${active * 100}%, 0, 0)` }}
+            style={{
+              transform: `translate3d(-${active * 100}%, 0, 0)`,
+            }}
           >
-            {images.map((image, index) => (
-              <div className="product-gallery__slide" key={image}>
-                <Image
-                  src={image}
-                  alt={`${product.name} view ${index + 1}`}
-                  fill
-                  loading={index === 0 ? "eager" : "lazy"}
-                  fetchPriority={index === 0 ? "high" : "auto"}
-                  sizes="(max-width: 900px) 100vw, 60vw"
-                />
-              </div>
-            ))}
+            {images.map((image, index) => {
+              const isActive = index === active;
+
+              return (
+                <div
+                  className={`product-gallery__slide ${
+                    isActive && isZoomed ? "is-zoomed" : ""
+                  }`}
+                  key={image}
+                  onClick={isActive ? handleZoomClick : undefined}
+                  onMouseMove={isActive ? handleZoomMove : undefined}
+                >
+                  <Image
+                    src={image}
+                    alt={`${product.name} view ${index + 1}`}
+                    fill
+                    loading={index === 0 ? "eager" : "lazy"}
+                    fetchPriority={index === 0 ? "high" : "auto"}
+                    sizes="(max-width: 900px) 100vw, 60vw"
+                    style={
+                      isActive
+                        ? {
+                            transform: isZoomed ? "scale(2.5)" : "scale(1)",
+                            transformOrigin: `${zoomPosition.x}% ${zoomPosition.y}%`,
+                          }
+                        : undefined
+                    }
+                  />
+                </div>
+              );
+            })}
           </div>
+
           {images.length > 1 && (
             <div className="product-gallery__controls">
               <button
                 className="product-gallery__previous"
-                onClick={() =>
-                  setActive((active - 1 + images.length) % images.length)
-                }
+                onClick={handlePrevious}
                 aria-label="Previous image"
               >
                 <ArrowIcon size={22} />
               </button>
-              <button
-                onClick={() => setActive((active + 1) % images.length)}
-                aria-label="Next image"
-              >
+
+              <button onClick={handleNext} aria-label="Next image">
                 <ArrowIcon size={22} />
               </button>
             </div>
@@ -72,7 +131,7 @@ export function ProductDetail({ product }: { product: Product }) {
             <button
               key={image}
               className={active === index ? "active" : ""}
-              onClick={() => setActive(index)}
+              onClick={() => handleSmallImgClick(index)}
               aria-label={`Show image ${index + 1}`}
             >
               <Image src={image} alt="" fill sizes="60px" />
