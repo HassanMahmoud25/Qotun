@@ -1,16 +1,32 @@
 import type { Metadata } from "next";
-import { SiteFooter } from "@/components/site-footer";
-import { SiteHeader } from "@/components/site-header";
+import { SiteShell } from "@/components/site-shell";
 import { StoreProvider } from "@/components/store-provider";
 import "./globals.css";
 
 export const metadata: Metadata = {
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL ?? "https://qotun.net",
+  ),
   title: {
-    default: "Qotun — Hotel comfort, made for home",
+    default: "Qotun — The House of Egyptian Cotton",
     template: "%s — Qotun",
   },
   description:
-    "Premium Egyptian cotton bedding and bath linens, created by hospitality experts for considered comfort at home.",
+    "Exceptional Egyptian cotton bedding and bath linens, composed in Cairo for the rituals of home.",
+  applicationName: "Qotun",
+  openGraph: {
+    type: "website",
+    siteName: "Qotun",
+    title: "Qotun — The House of Egyptian Cotton",
+    description:
+      "Exceptional Egyptian cotton bedding and bath linens, composed in Cairo for the rituals of home.",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Qotun — The House of Egyptian Cotton",
+    description:
+      "Exceptional Egyptian cotton bedding and bath linens, composed in Cairo for the rituals of home.",
+  },
 };
 
 export default function RootLayout({
@@ -22,9 +38,7 @@ export default function RootLayout({
     <html lang="en" data-scroll-behavior="smooth">
       <body>
         <StoreProvider>
-          <SiteHeader />
-          {children}
-          <SiteFooter />
+          <SiteShell>{children}</SiteShell>
         </StoreProvider>
       </body>
     </html>

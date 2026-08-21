@@ -37,6 +37,12 @@ export const UserIcon = (p: IconProps) => (
     <path d="M5 21c.6-4 3-6 7-6s6.4 2 7 6" />
   </Icon>
 );
+export const UserAddIcon = (p: IconProps) => (
+  <Icon {...p}>
+    <circle cx="10" cy="8" r="3.5" />
+    <path d="M3 21c.6-4 3-6 7-6 2 0 3.7.5 4.9 1.5M18.5 7v6M15.5 10h6" />
+  </Icon>
+);
 export const BagIcon = (p: IconProps) => (
   <Icon {...p}>
     <path d="M5 8h14l-1 13H6L5 8Z" />
@@ -83,12 +89,19 @@ export const MinusIcon = (p: IconProps) => (
 );
 export const HeartIcon = (p: IconProps) => (
   <Icon {...p}>
-    <path
-      d="M20.8 4.6a5.4 5.4 0 0 0-7.6 0L12 5.8l-1.2-1.2a5.4 5.4 0 0 0-7.6 7.6L12 21l8.8-8.8a5.4 5.4 0 0 0 0-7.6Z"
-      strokeWidth="2.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
+    <path d="M20.8 4.6a5.4 5.4 0 0 0-7.6 0L12 5.8l-1.2-1.2a5.4 5.4 0 0 0-7.6 7.6L12 21l8.8-8.8a5.4 5.4 0 0 0 0-7.6Z" />
+  </Icon>
+);
+export const TagIcon = (p: IconProps) => (
+  <Icon {...p}>
+    <path d="M4 4h7l9 9-7 7-9-9V4Z" />
+    <circle cx="8.5" cy="8.5" r="1" />
+  </Icon>
+);
+export const CareIcon = (p: IconProps) => (
+  <Icon {...p}>
+    <path d="M4 13v-1a8 8 0 0 1 16 0v1" />
+    <path d="M4 12h2v6H4a2 2 0 0 1-2-2v-2a2 2 0 0 1 2-2ZM20 12h-2v6h2a2 2 0 0 0 2-2v-2a2 2 0 0 0-2-2ZM18 18c0 2-1.5 3-4 3" />
   </Icon>
 );
 export const CheckIcon = (p: IconProps) => (

@@ -3,22 +3,6 @@ import { notFound } from "next/navigation";
 import { ArrowIcon, CheckIcon } from "@/components/icons";
 
 const pages = {
-  about: {
-    kicker: "Our story",
-    title: "Comfort, with a sense of place.",
-    intro:
-      "Qotun is an Egyptian home-linen brand born from years spent creating beautiful stays.",
-    sections: [
-      {
-        heading: "From hotels to home",
-        text: "Our founders learned comfort from the inside—across hotels, premium stays, and the demanding daily rhythm of hospitality. Qotun brings that knowledge home through considered linens that feel exceptional, perform reliably, and remain accessible.",
-      },
-      {
-        heading: "Proudly Egyptian",
-        text: "We work with 100% premium Egyptian cotton, choosing the right weave and thread count for each purpose. The result is not luxury for show, but luxury you can feel every day.",
-      },
-    ],
-  },
   "partner-with-qotun": {
     kicker: "Qotun Hospitality",
     title: "Better stays begin with better rest.",

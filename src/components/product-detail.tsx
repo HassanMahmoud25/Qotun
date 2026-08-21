@@ -7,12 +7,14 @@ import { useStore } from "@/components/store-provider";
 import { formatPrice, type Product } from "@/lib/data";
 
 export function ProductDetail({ product }: { product: Product }) {
-  const { add } = useStore();
+  const { add, isCompared, isWishlisted, toggleCompare, toggleWishlist } =
+    useStore();
   const [active, setActive] = useState(0);
   const [size, setSize] = useState(product.sizes?.[0] ?? "One size");
   const [colour, setColour] = useState("Hotel White");
   const [quantity, setQuantity] = useState(1);
-  const [saved, setSaved] = useState(false);
+  const saved = isWishlisted(product.slug);
+  const compared = isCompared(product.slug);
   const [isZoomed, setIsZoomed] = useState(false);
   const [zoomPosition, setZoomPosition] = useState({
     x: 50,
@@ -144,6 +146,11 @@ export function ProductDetail({ product }: { product: Product }) {
           <span className="eyebrow">Qotun · {product.category}</span>
         </div>
         <h1>{product.name}</h1>
+        <a className="product-info__rating" href="#reviews">
+          <span aria-hidden="true">★★★★★</span>
+          <strong>4.8</strong>
+          <small>127 reviews</small>
+        </a>
         <p className="product-info__tagline">
           {product.eyebrow}. Thoughtfully made for slower, softer moments.
         </p>
@@ -220,7 +227,8 @@ export function ProductDetail({ product }: { product: Product }) {
           </div>
           <button
             className={`product-detail__save ${saved ? "saved" : ""}`}
-            onClick={() => setSaved(!saved)}
+            onClick={() => toggleWishlist(product.slug)}
+            aria-pressed={saved}
             aria-label={saved ? "Remove from wishlist" : "Save to wishlist"}
           >
             <HeartIcon size={23} />
@@ -236,6 +244,22 @@ export function ProductDetail({ product }: { product: Product }) {
             </p>
           </div>
         </div>
+        <button
+          className={`product-detail__compare ${compared ? "is-selected" : ""}`}
+          onClick={() => toggleCompare(product.slug)}
+          aria-pressed={compared}
+        >
+          <span aria-hidden="true">{compared ? "✓" : "+"}</span>
+          <span>
+            <strong>{compared ? "Added to comparison" : "Compare this piece"}</strong>
+            <small>
+              {compared
+                ? "We’ll keep it ready while you browse."
+                : "See materials, feel, sizes and value side by side."}
+            </small>
+          </span>
+          <ArrowIcon size={18} />
+        </button>
         <div className="product-accordions">
           <details open>
             <summary>

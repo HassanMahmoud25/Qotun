@@ -2,7 +2,9 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { AnimatePresence, motion, MotionConfig } from "framer-motion";
 import {
   ArrowIcon,
   BagIcon,
@@ -18,6 +20,8 @@ type CartLine = CartOptions & { id: string; slug: string; quantity: number };
 type StoreContextValue = {
   cart: CartLine[];
   count: number;
+  wishlist: string[];
+  wishlistCount: number;
   cartOpen: boolean;
   setCartOpen: (open: boolean) => void;
   quickView: string | null;
@@ -25,6 +29,17 @@ type StoreContextValue = {
   add: (slug: string, quantity?: number, options?: CartOptions) => void;
   update: (id: string, quantity: number) => void;
   remove: (id: string) => void;
+  isWishlisted: (slug: string) => boolean;
+  toggleWishlist: (slug: string) => void;
+  removeFromWishlist: (slug: string) => void;
+  compare: string[];
+  compareLimit: number;
+  compareNotice: string | null;
+  isCompared: (slug: string) => boolean;
+  toggleCompare: (slug: string) => void;
+  removeFromCompare: (slug: string) => void;
+  clearCompare: () => void;
+  dismissCompareNotice: () => void;
 };
 
 const StoreContext = createContext<StoreContextValue | null>(null);
@@ -37,6 +52,9 @@ export function useStore() {
 
 export function StoreProvider({ children }: { children: React.ReactNode }) {
   const [cart, setCart] = useState<CartLine[]>([]);
+  const [wishlist, setWishlist] = useState<string[]>([]);
+  const [compare, setCompare] = useState<string[]>([]);
+  const [compareNotice, setCompareNotice] = useState<string | null>(null);
   const [cartOpen, setCartOpen] = useState(false);
   const [quickView, setQuickView] = useState<string | null>(null);
   const [loaded, setLoaded] = useState(false);
@@ -56,6 +74,41 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
           /* ignore invalid local data */
         }
       }
+      const savedWishlist = window.localStorage.getItem("qotun-wishlist");
+      if (savedWishlist) {
+        try {
+          const parsed = JSON.parse(savedWishlist) as unknown;
+          if (Array.isArray(parsed)) {
+            setWishlist(
+              parsed.filter(
+                (slug): slug is string => typeof slug === "string",
+              ),
+            );
+          }
+        } catch {
+          /* ignore invalid local data */
+        }
+      }
+      const savedCompare = window.localStorage.getItem("qotun-compare");
+      if (savedCompare) {
+        try {
+          const parsed = JSON.parse(savedCompare) as unknown;
+          if (Array.isArray(parsed)) {
+            setCompare(
+              parsed
+                .filter(
+                  (slug, index): slug is string =>
+                    typeof slug === "string" &&
+                    parsed.indexOf(slug) === index &&
+                    products.some((product) => product.slug === slug),
+                )
+                .slice(0, 4),
+            );
+          }
+        } catch {
+          /* ignore invalid local data */
+        }
+      }
       setLoaded(true);
     }, 0);
     return () => window.clearTimeout(timer);
@@ -65,10 +118,24 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     if (loaded) window.localStorage.setItem("qotun-cart", JSON.stringify(cart));
   }, [cart, loaded]);
 
+  useEffect(() => {
+    if (loaded) {
+      window.localStorage.setItem("qotun-wishlist", JSON.stringify(wishlist));
+    }
+  }, [wishlist, loaded]);
+
+  useEffect(() => {
+    if (loaded) {
+      window.localStorage.setItem("qotun-compare", JSON.stringify(compare));
+    }
+  }, [compare, loaded]);
+
   const value = useMemo<StoreContextValue>(
     () => ({
       cart,
       count: cart.reduce((sum, item) => sum + item.quantity, 0),
+      wishlist,
+      wishlistCount: wishlist.length,
       cartOpen,
       setCartOpen,
       quickView,
@@ -98,8 +165,54 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
       remove(id) {
         setCart((current) => current.filter((line) => line.id !== id));
       },
+      isWishlisted(slug) {
+        return wishlist.includes(slug);
+      },
+      toggleWishlist(slug) {
+        setWishlist((current) =>
+          current.includes(slug)
+            ? current.filter((item) => item !== slug)
+            : [...current, slug],
+        );
+      },
+      removeFromWishlist(slug) {
+        setWishlist((current) => current.filter((item) => item !== slug));
+      },
+      compare,
+      compareLimit: 4,
+      compareNotice,
+      isCompared(slug) {
+        return compare.includes(slug);
+      },
+      toggleCompare(slug) {
+        setCompare((current) => {
+          if (current.includes(slug)) {
+            setCompareNotice(null);
+            return current.filter((item) => item !== slug);
+          }
+          if (current.length >= 4) {
+            setCompareNotice(
+              "Your comparison is full. Remove one piece before adding another.",
+            );
+            return current;
+          }
+          setCompareNotice(null);
+          return [...current, slug];
+        });
+      },
+      removeFromCompare(slug) {
+        setCompareNotice(null);
+        setCompare((current) => current.filter((item) => item !== slug));
+      },
+      clearCompare() {
+        setCompareNotice(null);
+        setCompare([]);
+      },
+      dismissCompareNotice() {
+        setCompareNotice(null);
+      },
     }),
-    [cart, cartOpen, quickView],
+    [cart, cartOpen, compare, compareNotice, quickView, wishlist],
   );
 
   const quickViewProduct = products.find(
@@ -108,15 +221,176 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <StoreContext.Provider value={value}>
-      {children}
-      {quickViewProduct && (
-        <QuickViewDialog
-          key={quickViewProduct.slug}
-          product={quickViewProduct}
-        />
-      )}
-      <CartDrawer />
+      <MotionConfig reducedMotion="user">
+        {children}
+        <AnimatePresence>
+          {quickViewProduct && (
+            <QuickViewDialog
+              key={quickViewProduct.slug}
+              product={quickViewProduct}
+            />
+          )}
+        </AnimatePresence>
+        <CartDrawer />
+        <CompareDock />
+      </MotionConfig>
     </StoreContext.Provider>
+  );
+}
+
+function CompareDock() {
+  const pathname = usePathname();
+  const [collapsed, setCollapsed] = useState(false);
+  const {
+    cartOpen,
+    clearCompare,
+    compare,
+    compareLimit,
+    compareNotice,
+    dismissCompareNotice,
+    quickView,
+    removeFromCompare,
+  } = useStore();
+  const selected = compare
+    .map((slug) => products.find((product) => product.slug === slug))
+    .filter((product): product is Product => Boolean(product));
+  const hidden =
+    !selected.length ||
+    cartOpen ||
+    quickView !== null ||
+    pathname === "/compare" ||
+    pathname.startsWith("/checkout") ||
+    pathname === "/account/create";
+
+  return (
+    <AnimatePresence initial={false} mode="wait">
+      {!hidden && collapsed && !compareNotice ? (
+        <motion.aside
+          className="compare-dock compare-dock--collapsed"
+          aria-label="Product comparison"
+          key="collapsed"
+          initial={{ opacity: 0, y: 14, scale: 0.96 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={{ opacity: 0, y: 10, scale: 0.96 }}
+          transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <button
+            className="compare-dock__reopen"
+            onClick={() => setCollapsed(false)}
+            aria-label={`Expand comparison with ${selected.length} products`}
+          >
+            <span className="eyebrow">Compare pieces</span>
+            <strong aria-label={`${selected.length} selected`}>
+              {selected.length}
+            </strong>
+            <PlusIcon size={17} />
+          </button>
+        </motion.aside>
+      ) : !hidden ? (
+        <motion.aside
+          className="compare-dock"
+          aria-label="Product comparison"
+          key="expanded"
+          initial={{ opacity: 0, y: 28, scale: 0.985 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={{ opacity: 0, y: 24, scale: 0.985 }}
+          transition={{ duration: 0.34, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <AnimatePresence initial={false}>
+            {compareNotice && (
+              <motion.div
+                className="compare-dock__notice"
+                role="status"
+                aria-live="polite"
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 6 }}
+                transition={{ duration: 0.2 }}
+              >
+                <span>{compareNotice}</span>
+                <button
+                  onClick={dismissCompareNotice}
+                  aria-label="Dismiss message"
+                >
+                  <CloseIcon size={15} />
+                </button>
+              </motion.div>
+            )}
+          </AnimatePresence>
+          <div className="compare-dock__inner">
+            <div className="compare-dock__intro">
+              <span className="eyebrow">Compare pieces</span>
+              <div>
+                <strong>
+                  {selected.length} of {compareLimit}
+                </strong>
+                <button onClick={clearCompare}>Clear</button>
+                <button
+                  className="compare-dock__collapse"
+                  onClick={() => setCollapsed(true)}
+                  aria-label="Minimize comparison"
+                  title="Minimize comparison"
+                >
+                  <MinusIcon size={14} />
+                </button>
+              </div>
+            </div>
+            <div className="compare-dock__pieces">
+              <AnimatePresence initial={false}>
+                {selected.map((product) => (
+                  <motion.div
+                    className="compare-dock__piece"
+                    key={product.slug}
+                    layout
+                    initial={{ opacity: 0, x: 12, scale: 0.94 }}
+                    animate={{ opacity: 1, x: 0, scale: 1 }}
+                    exit={{ opacity: 0, x: -10, scale: 0.92 }}
+                    transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
+                  >
+                    <Image src={product.image} alt="" fill sizes="54px" />
+                    <span>{product.name}</span>
+                    <button
+                      onClick={() => removeFromCompare(product.slug)}
+                      aria-label={`Remove ${product.name} from comparison`}
+                    >
+                      <CloseIcon size={14} />
+                    </button>
+                  </motion.div>
+                ))}
+                {Array.from({ length: compareLimit - selected.length }).map(
+                  (_, index) => {
+                    const position = selected.length + index;
+                    return (
+                      <motion.span
+                        className="compare-dock__slot"
+                        key={`slot-${position}`}
+                        layout
+                        aria-hidden="true"
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.9 }}
+                        transition={{ duration: 0.2 }}
+                      >
+                        +
+                      </motion.span>
+                    );
+                  },
+                )}
+              </AnimatePresence>
+            </div>
+            <div className="compare-dock__actions">
+              {selected.length >= 2 ? (
+                <Link className="button button-light" href="/compare">
+                  Compare now
+                </Link>
+              ) : (
+                <span>Add one more piece</span>
+              )}
+            </div>
+          </div>
+        </motion.aside>
+      ) : null}
+    </AnimatePresence>
   );
 }
 
@@ -138,7 +412,7 @@ export function AddToCartButton({
 }
 
 function QuickViewDialog({ product }: { product: Product }) {
-  const { add, setQuickView } = useStore();
+  const { add, isWishlisted, setQuickView, toggleWishlist } = useStore();
   const gallery = [...product.gallery, product.image].filter(
     (image, index, images) => images.indexOf(image) === index,
   );
@@ -155,7 +429,7 @@ function QuickViewDialog({ product }: { product: Product }) {
   const [size, setSize] = useState(sizes[0]);
   const [colour, setColour] = useState(colours[0].name);
   const [quantity, setQuantity] = useState(1);
-  const [saved, setSaved] = useState(false);
+  const saved = isWishlisted(product.slug);
   const [isZoomed, setIsZoomed] = useState(false);
   const [zoomPosition, setZoomPosition] = useState({
     x: 50,
@@ -212,17 +486,42 @@ function QuickViewDialog({ product }: { product: Product }) {
   };
 
   return (
-    <>
-      <button
-        className="quick-view-scrim is-open"
+    <motion.div
+      className="quick-view-layer"
+      initial="closed"
+      animate="open"
+      exit="closed"
+    >
+      <motion.button
+        className="quick-view-scrim"
         onClick={() => setQuickView(null)}
         aria-label="Close quick view"
+        variants={{
+          closed: { opacity: 0 },
+          open: { opacity: 1 },
+        }}
+        transition={{ duration: 0.28, ease: "easeOut" }}
       />
-      <section
-        className="quick-view is-open"
+      <motion.section
+        className="quick-view"
         role="dialog"
         aria-modal="true"
         aria-label={`Quick view ${product.name}`}
+        variants={{
+          closed: {
+            opacity: 0,
+            scale: 0.97,
+            x: "-50%",
+            y: "calc(-50% + 28px)",
+          },
+          open: { opacity: 1, scale: 1, x: "-50%", y: "-50%" },
+        }}
+        transition={{
+          type: "spring",
+          stiffness: 330,
+          damping: 30,
+          mass: 0.82,
+        }}
       >
         <button
           className="quick-view__close icon-button"
@@ -235,18 +534,21 @@ function QuickViewDialog({ product }: { product: Product }) {
 
         <div className="quick-view__gallery">
           <div className="quick-view__main-image">
-            <div
+            <motion.div
               className="quick-view__slider"
-              style={{ transform: `translate3d(-${imageIndex * 100}%, 0, 0)` }}
+              animate={{ x: `-${imageIndex * 100}%` }}
+              transition={{ type: "spring", stiffness: 280, damping: 32 }}
             >
               {gallery.map((image, index) => (
                 <div
                   key={image}
                   className={`quick-view__slide ${
-                    imageIndex && isZoomed ? "is-zoomed" : ""
+                    index === imageIndex && isZoomed ? "is-zoomed" : ""
                   }`}
-                  onClick={handleZoomClick}
-                  onMouseMove={handleZoomMove}
+                  onClick={index === imageIndex ? handleZoomClick : undefined}
+                  onMouseMove={
+                    index === imageIndex ? handleZoomMove : undefined
+                  }
                 >
                   <Image
                     src={image}
@@ -255,13 +557,16 @@ function QuickViewDialog({ product }: { product: Product }) {
                     sizes="(max-width: 800px) 100vw, 55vw"
                     priority={index === 0}
                     style={{
-                      transform: isZoomed ? "scale(2.5)" : "scale(1)",
+                      transform:
+                        index === imageIndex && isZoomed
+                          ? "scale(2.5)"
+                          : "scale(1)",
                       transformOrigin: `${zoomPosition.x}% ${zoomPosition.y}%`,
                     }}
                   />
                 </div>
               ))}
-            </div>
+            </motion.div>
 
             {gallery.length > 1 && (
               <div className="quick-view__image-controls">
@@ -372,7 +677,8 @@ function QuickViewDialog({ product }: { product: Product }) {
             </div>
             <button
               className={`quick-view__save ${saved ? "saved" : ""}`}
-              onClick={() => setSaved(!saved)}
+              onClick={() => toggleWishlist(product.slug)}
+              aria-pressed={saved}
               aria-label={saved ? "Remove from wishlist" : "Save to wishlist"}
             >
               <HeartIcon size={23} />
@@ -389,8 +695,8 @@ function QuickViewDialog({ product }: { product: Product }) {
             </div>
           </div>
         </div>
-      </section>
-    </>
+      </motion.section>
+    </motion.div>
   );
 }
 
@@ -409,14 +715,20 @@ function CartDrawer() {
 
   return (
     <>
-      <button
+      <motion.button
         aria-label="Close cart"
         className={`drawer-scrim ${cartOpen ? "is-open" : ""}`}
         onClick={() => setCartOpen(false)}
+        initial={false}
+        animate={{ opacity: cartOpen ? 1 : 0 }}
+        transition={{ duration: cartOpen ? 0.28 : 0.2, ease: "easeOut" }}
       />
-      <aside
+      <motion.aside
         className={`cart-drawer ${cartOpen ? "is-open" : ""}`}
         aria-hidden={!cartOpen}
+        initial={false}
+        animate={{ x: cartOpen ? "0%" : "100%" }}
+        transition={{ type: "spring", stiffness: 320, damping: 34, mass: 0.9 }}
       >
         <div className="cart-drawer__head">
           <div>
@@ -530,7 +842,7 @@ function CartDrawer() {
             </div>
           </>
         )}
-      </aside>
+      </motion.aside>
     </>
   );
 }

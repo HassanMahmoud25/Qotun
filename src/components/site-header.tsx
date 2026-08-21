@@ -3,12 +3,17 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import {
   BagIcon,
+  CareIcon,
   CloseIcon,
+  HeartIcon,
   MenuIcon,
   SearchIcon,
+  TagIcon,
+  UserAddIcon,
   UserIcon,
 } from "@/components/icons";
 import { useStore } from "@/components/store-provider";
@@ -77,18 +82,26 @@ const categories: NavItem[] = [
 
 const secondary = [
   { label: "Build your bed", href: "/build-your-bed" },
+  { label: "Compare", href: "/compare" },
   { label: "Our story", href: "/pages/about" },
-  { label: "Contact us", href: "/pages/contact" },
 ];
 
 export function SiteHeader() {
   const pathname = usePathname();
   const router = useRouter();
-  const { count, setCartOpen } = useStore();
+  const { count, setCartOpen, wishlistCount } = useStore();
   const [menu, setMenu] = useState(false);
   const [openSection, setOpenSection] = useState<string | null>(null);
+  const [dropdownState, setDropdownState] = useState<{
+    id: string;
+    pathname: string;
+  } | null>(null);
   const [search, setSearch] = useState(false);
+  const accountMenuRef = useRef<HTMLDivElement>(null);
   const [query, setQuery] = useState("");
+  const openDropdown =
+    dropdownState?.pathname === pathname ? dropdownState.id : null;
+  const accountMenu = openDropdown === "account";
   const normalizedQuery = query.trim().toLowerCase();
   const searchResults = products
     .filter((product) =>
@@ -104,10 +117,21 @@ export function SiteHeader() {
     function onKeyDown(event: KeyboardEvent) {
       if (event.key !== "Escape") return;
       setMenu(false);
+      setDropdownState(null);
       setSearch(false);
     }
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
+  }, []);
+
+  useEffect(() => {
+    function closeAccountMenu(event: PointerEvent) {
+      if (!accountMenuRef.current?.contains(event.target as Node)) {
+        setDropdownState(null);
+      }
+    }
+    document.addEventListener("pointerdown", closeAccountMenu);
+    return () => document.removeEventListener("pointerdown", closeAccountMenu);
   }, []);
 
   function submit(event: FormEvent) {
@@ -131,7 +155,10 @@ export function SiteHeader() {
       <header className="site-header">
         <button
           className="icon-button mobile-only header-menu-button"
-          onClick={() => setMenu(true)}
+          onClick={() => {
+            setMenu(true);
+            setDropdownState(null);
+          }}
           aria-label="Open menu"
           aria-expanded={menu}
         >
@@ -143,10 +170,27 @@ export function SiteHeader() {
           aria-label="Shop categories"
         >
           {categories.map((item) => (
-            <div className="header-nav__item" key={item.href}>
+            <div
+              className={`header-nav__item ${openDropdown === item.href ? "is-open" : ""}`}
+              key={item.href}
+              onMouseEnter={() => {
+                setDropdownState({ id: item.href, pathname });
+              }}
+              onMouseLeave={() => setDropdownState(null)}
+              onFocusCapture={() => {
+                setDropdownState({ id: item.href, pathname });
+              }}
+              onBlurCapture={(event) => {
+                if (!event.currentTarget.contains(event.relatedTarget)) {
+                  setDropdownState(null);
+                }
+              }}
+            >
               <Link
                 className={`header-nav__trigger ${pathname === item.href ? "active" : ""}`}
                 href={item.href}
+                aria-expanded={openDropdown === item.href}
+                aria-haspopup="true"
               >
                 <span>{item.label}</span>
                 <span aria-hidden="true">
@@ -168,7 +212,7 @@ export function SiteHeader() {
                   </svg>
                 </span>
               </Link>
-              
+
               <div className="mega-menu">
                 <div className="mega-menu__links">
                   <span className="eyebrow">{item.label}</span>
@@ -226,20 +270,83 @@ export function SiteHeader() {
         <div className="header-actions">
           <button
             className="header-search-trigger"
-            onClick={() => setSearch(true)}
+            onClick={() => {
+              setSearch(true);
+              setDropdownState(null);
+            }}
             aria-label="Search"
           >
             <SearchIcon />
           </button>
-          <Link
-            className="icon-button desktop-only"
-            href="/account"
-            aria-label="Account"
+          <div
+            className={`account-menu ${accountMenu ? "is-open" : ""}`}
+            ref={accountMenuRef}
           >
-            <UserIcon />
-          </Link>
+            <button
+              className="icon-button account-menu__trigger"
+              type="button"
+              aria-label="Account menu"
+              aria-expanded={accountMenu}
+              aria-haspopup="menu"
+              onClick={() => {
+                setDropdownState(
+                  accountMenu ? null : { id: "account", pathname },
+                );
+              }}
+            >
+              <UserIcon />
+            </button>
+            <div className="account-menu__panel" role="menu">
+              <Link
+                className="account-menu__offer"
+                href="/account/create?offer=welcome"
+                role="menuitem"
+                onClick={() => setDropdownState(null)}
+              >
+                <TagIcon size={20} />
+                <span>
+                  <strong>Claim your welcome</strong>
+                  <small>10% off your first order</small>
+                </span>
+              </Link>
+              <div className="account-menu__divider" />
+              <Link
+                href="/account/create"
+                role="menuitem"
+                onClick={() => setDropdownState(null)}
+              >
+                <UserAddIcon size={21} />
+                <span>Create account</span>
+              </Link>
+              <Link
+                href="/account"
+                role="menuitem"
+                onClick={() => setDropdownState(null)}
+              >
+                <UserIcon size={21} />
+                <span>Sign in</span>
+              </Link>
+              <Link
+                href="/wishlist"
+                role="menuitem"
+                onClick={() => setDropdownState(null)}
+              >
+                <HeartIcon size={21} />
+                <span>Wishlist</span>
+                {wishlistCount > 0 && <small>{wishlistCount}</small>}
+              </Link>
+              <Link
+                href="/pages/contact"
+                role="menuitem"
+                onClick={() => setDropdownState(null)}
+              >
+                <CareIcon size={21} />
+                <span>Contact & care</span>
+              </Link>
+            </div>
+          </div>
           <button
-            className="icon-button bag-button"
+            className="icon-button bag-button header-count"
             onClick={() => setCartOpen(true)}
             aria-label={`Bag with ${count} items`}
           >
@@ -249,94 +356,147 @@ export function SiteHeader() {
         </div>
       </header>
 
-      <div
-        className={`mobile-menu ${menu ? "is-open" : ""} bg-red-600 p-100`}
-        aria-hidden={!menu}
-        role="dialog"
-        aria-modal="true"
-        aria-label="Navigation menu"
-      >
-        <div className="mobile-menu__head">
-          <Link
-            href="/"
-            className="mobile-menu__logo"
-            aria-label="Qotun home"
-            onClick={closeMenu}
+      <AnimatePresence onExitComplete={() => setOpenSection(null)}>
+        {menu && (
+          <motion.div
+            className="mobile-menu is-open bg-red-600 p-100"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Navigation menu"
+            initial="closed"
+            animate="open"
+            exit="closed"
+            variants={{
+              closed: {
+                x: "-100%",
+                transition: {
+                  duration: 0.38,
+                  ease: [0.4, 0, 1, 1],
+                  staggerChildren: 0.025,
+                  staggerDirection: -1,
+                },
+              },
+              open: {
+                x: "0%",
+                transition: {
+                  type: "spring",
+                  stiffness: 300,
+                  damping: 32,
+                  mass: 0.9,
+                  staggerChildren: 0.035,
+                  delayChildren: 0.08,
+                },
+              },
+            }}
           >
-            <Image
-              src="https://qotun.net/cdn/shop/files/Qotun_logo-02_1.png?height=144&v=1785079707"
-              alt="Qotun"
-              width={244}
-              height={72}
-            />
-          </Link>
-          <button
-            className="icon-button"
-            onClick={closeMenu}
-            aria-label="Close menu"
-          >
-            <CloseIcon />
-          </button>
-        </div>
+            <motion.div
+              className="mobile-menu__head"
+              variants={{
+                closed: { opacity: 0, x: -14 },
+                open: { opacity: 1, x: 0 },
+              }}
+            >
+              <Link
+                href="/"
+                className="mobile-menu__logo"
+                aria-label="Qotun home"
+                onClick={closeMenu}
+              >
+                <Image
+                  src="https://qotun.net/cdn/shop/files/Qotun_logo-02_1.png?height=144&v=1785079707"
+                  alt="Qotun"
+                  width={244}
+                  height={72}
+                />
+              </Link>
+              <button
+                className="icon-button"
+                onClick={closeMenu}
+                aria-label="Close menu"
+              >
+                <CloseIcon />
+              </button>
+            </motion.div>
 
-        <nav aria-label="Mobile navigation">
-          {categories.map((item) => {
-            const expanded = openSection === item.label;
-            return (
-              <div className="mobile-nav-group" key={item.href}>
-                <button
-                  type="button"
-                  aria-expanded={expanded}
-                  onClick={() => setOpenSection(expanded ? null : item.label)}
+            <motion.nav
+              aria-label="Mobile navigation"
+              variants={{
+                closed: { opacity: 0, x: -20 },
+                open: { opacity: 1, x: 0 },
+              }}
+            >
+              {categories.map((item) => {
+                const expanded = openSection === item.label;
+                return (
+                  <div className="mobile-nav-group" key={item.href}>
+                    <button
+                      type="button"
+                      aria-expanded={expanded}
+                      onClick={() =>
+                        setOpenSection(expanded ? null : item.label)
+                      }
+                    >
+                      {item.label}
+                      <span aria-hidden="true">+</span>
+                    </button>
+                    <div
+                      className={`mobile-submenu ${expanded ? "is-open" : ""}`}
+                    >
+                      {item.children?.map((child) => (
+                        <Link
+                          key={child.href}
+                          href={child.href}
+                          onClick={closeMenu}
+                        >
+                          {child.label}
+                        </Link>
+                      ))}
+                      <Link
+                        className="mobile-submenu__all"
+                        href={item.href}
+                        onClick={closeMenu}
+                      >
+                        Shop all {item.label.toLowerCase()}
+                      </Link>
+                    </div>
+                  </div>
+                );
+              })}
+              {secondary.map((item) => (
+                <Link
+                  className="mobile-nav-direct"
+                  key={item.href}
+                  href={item.href}
+                  onClick={closeMenu}
                 >
                   {item.label}
-                  <span aria-hidden="true">+</span>
-                </button>
-                <div className={`mobile-submenu ${expanded ? "is-open" : ""}`}>
-                  {item.children?.map((child) => (
-                    <Link
-                      key={child.href}
-                      href={child.href}
-                      onClick={closeMenu}
-                    >
-                      {child.label}
-                    </Link>
-                  ))}
-                  <Link
-                    className="mobile-submenu__all"
-                    href={item.href}
-                    onClick={closeMenu}
-                  >
-                    Shop all {item.label.toLowerCase()}
-                  </Link>
-                </div>
-              </div>
-            );
-          })}
-          {secondary.map((item) => (
-            <Link
-              className="mobile-nav-direct"
-              key={item.href}
-              href={item.href}
-              onClick={closeMenu}
-            >
-              {item.label}
-            </Link>
-          ))}
-        </nav>
+                </Link>
+              ))}
+            </motion.nav>
 
-        <div className="mobile-menu__foot">
-          <Link href="/account" onClick={closeMenu}>
-            My account
-          </Link>
-          <Link href="/pages/contact" onClick={closeMenu}>
-            Contact
-          </Link>
-          <Link href="/collections/all" onClick={closeMenu}>
-            Shop all
-          </Link>
-        </div>
-      </div>
+            <motion.div
+              className="mobile-menu__foot"
+              variants={{
+                closed: { opacity: 0, y: 10 },
+                open: { opacity: 1, y: 0 },
+              }}
+            >
+              <Link href="/wishlist" onClick={closeMenu}>
+                My wishlist ({wishlistCount})
+              </Link>
+              <Link href="/account" onClick={closeMenu}>
+                My account
+              </Link>
+              <Link href="/pages/contact" onClick={closeMenu}>
+                Contact
+              </Link>
+              <Link href="/collections/all" onClick={closeMenu}>
+                Shop all
+              </Link>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <div
         className={`search-overlay ${search ? "is-open" : ""}`}

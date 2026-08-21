@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ProductDetail } from "@/components/product-detail";
 import { ProductCard } from "@/components/product-card";
+import { ProductReviews } from "@/components/product-reviews";
 import { products } from "@/lib/data";
 
 export function generateStaticParams() {
@@ -37,6 +38,8 @@ export default async function ProductPage({
       </nav>
 
       <ProductDetail product={product} />
+
+      <ProductReviews productSlug={product.slug} productName={product.name} />
       
       <section className="related-products">
         <div className="section-heading">

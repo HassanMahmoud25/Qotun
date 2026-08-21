@@ -9,21 +9,31 @@ const slides = [
     type: "image" as const,
     src: "https://qotun.net/cdn/shop/files/banner1.jpg?v=1785100909&width=2560",
     alt: "A serene bedroom dressed in crisp white Qotun linens",
-    eyebrow: "Hotel comfort. Made for home.",
-    title: "Wake up somewhere better.",
-    body: "Sleep in premium Egyptian cotton, designed by hospitality experts and made for real life.",
+    eyebrow: "The house of Egyptian cotton",
+    title: "The ritual of exceptional rest.",
+    body: "Rare comfort, composed in Cairo from long-staple Egyptian cotton for the most private room in your home.",
     href: "/collections/bedroom",
-    action: "Shop bedding",
+    action: "Explore the collection",
   },
   {
     type: "image" as const,
     src: "https://qotun.net/cdn/shop/files/Unit-500TC-lifestyle-U03.jpg?v=1786090924&width=2560",
     alt: "Qotun 500 thread count bedding in warm natural light",
-    eyebrow: "The 500 thread count edit",
-    title: "Hotel-level softness. Every night.",
-    body: "Long-staple Egyptian cotton with a smooth finish that becomes softer with every wash.",
+    eyebrow: "The signature 500 collection",
+    title: "Quiet luxury, woven into every night.",
+    body: "A luminous sateen woven from long-staple cotton, tailored to soften beautifully with time.",
     href: "/collections/bed-sheets",
-    action: "Meet the collection",
+    action: "Discover Signature 500",
+  },
+  {
+    type: "image" as const,
+    src: "https://qotun.net/cdn/shop/collections/Lifestyle.jpg?v=1786217641&width=2560",
+    alt: "A stack of white Egyptian cotton towels in a sunlit bathroom",
+    eyebrow: "The bath collection",
+    title: "Everyday rituals, exceptionally soft.",
+    body: "Plush Egyptian cotton towels bring lasting softness, generous weight, and quiet refinement to the bath.",
+    href: "/collections/bathroom",
+    action: "Explore the bath collection",
   },
   // {
   //   type: "video" as const,
@@ -122,7 +132,7 @@ export function HomeHero() {
                 className="button button-outline-light"
                 href="/collections/bundles"
               >
-                Save with bundles
+                Enter the sleep studio
               </Link>
             </div>
           </div>

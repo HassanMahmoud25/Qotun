@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { motion } from "framer-motion";
 import { ArrowIcon, HeartIcon, ViewIcon } from "@/components/icons";
 import { useStore } from "@/components/store-provider";
 import { formatPrice, type Product } from "@/lib/data";
@@ -14,12 +14,21 @@ export function ProductCard({
   product: Product;
   index?: number;
 }) {
-  const { setQuickView } = useStore();
-  const [saved, setSaved] = useState(false);
+  const {
+    isCompared,
+    isWishlisted,
+    setQuickView,
+    toggleCompare,
+    toggleWishlist,
+  } = useStore();
+  const saved = isWishlisted(product.slug);
+  const compared = isCompared(product.slug);
   return (
-    <article
+    <motion.article
       className="product-card reveal"
       style={{ "--delay": `${(index % 4) * 70}ms` } as React.CSSProperties}
+      whileHover={{ y: -5 }}
+      transition={{ type: "spring", stiffness: 360, damping: 28 }}
     >
       <div className="product-card__media">
         <Link
@@ -52,7 +61,8 @@ export function ProductCard({
         </span>
         <button
           className={`save-button ${saved ? "saved" : ""}`}
-          onClick={() => setSaved(!saved)}
+          onClick={() => toggleWishlist(product.slug)}
+          aria-pressed={saved}
           aria-label={saved ? "Remove from wishlist" : "Save to wishlist"}
         >
           <HeartIcon size={18} />
@@ -67,7 +77,18 @@ export function ProductCard({
         </button>
       </div>
       <div className="product-card__body">
-        <span>{product.eyebrow}</span>
+        <div className="product-card__meta">
+          <span>{product.eyebrow}</span>
+          <button
+            className={`compare-toggle ${compared ? "is-selected" : ""}`}
+            onClick={() => toggleCompare(product.slug)}
+            aria-pressed={compared}
+            aria-label={`${compared ? "Remove" : "Add"} ${product.name} ${compared ? "from" : "to"} comparison`}
+          >
+            <i aria-hidden="true" />
+            {compared ? "Added" : "Compare"}
+          </button>
+        </div>
         <Link href={`/products/${product.slug}`}>
           <h3>{product.name}</h3>
           <ArrowIcon size={17} />
@@ -87,6 +108,6 @@ export function ProductCard({
           <em>+4 colours</em>
         </div>
       </div>
-    </article>
+    </motion.article>
   );
 }

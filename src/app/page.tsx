@@ -1,7 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowIcon, CheckIcon, ChevronIcon } from "@/components/icons";
+import { CategoryCarousel } from "@/components/category-carousel";
 import { HomeHero } from "@/components/home-hero";
+import { ArrowIcon, CheckIcon } from "@/components/icons";
 import { ProductCard } from "@/components/product-card";
 import { editorial, products } from "@/lib/data";
 
@@ -46,24 +47,27 @@ const shopCategories = [
 
 const spotlights = [
   {
-    title: "The Hotel Bed Edit",
-    note: "The complete five-star setup",
-    href: "/products/luxe-essential-bed-bundle",
-    image: products[0].gallery[0],
+    title: "Find Your Fabric",
+    note: "Discover the cotton feel made for you",
+    action: "Take the fabric quiz",
+    href: "/fabric-guide",
+    image: editorial.texture,
     tone: "blue",
   },
   {
-    title: "Find Your Fabric",
-    note: "200TC or 500TC? Meet your match",
-    href: "/fabric-guide",
-    image: editorial.texture,
+    title: "Build Your Bed",
+    note: "Four choices. One beautifully complete bed",
+    action: "Start building",
+    href: "/build-your-bed",
+    image: products[0].gallery[0],
     tone: "sage",
   },
   {
-    title: "The Bath Reset",
-    note: "Towels worth lingering in",
-    href: "/collections/bathroom",
-    image: products[2].gallery[0],
+    title: "Compare Your Favourites",
+    note: "See every meaningful detail side by side",
+    action: "Compare products",
+    href: "/compare",
+    image: products[0].gallery[1],
     tone: "sand",
   },
 ];
@@ -82,43 +86,7 @@ export default function HomePage() {
       </section>
 
       <section className="category-section section-pad">
-        <div className="section-heading reveal">
-          <div>
-            <span className="eyebrow">Start somewhere soft</span>
-            <h2>Shop by Category</h2>
-          </div>
-          <div className="section-arrows">
-            <button aria-label="Previous category">
-              <ChevronIcon size={28} className="rotate-180" />
-            </button>
-
-            <button aria-label="Next category">
-              <ChevronIcon size={28} />
-            </button>
-          </div>
-        </div>
-        <div className="category-rail">
-          {shopCategories.map((category, index) => (
-            <Link
-              href={category.href}
-              className="category-tile reveal"
-              style={{ "--delay": `${index * 55}ms` } as React.CSSProperties}
-              key={category.title}
-            >
-              <div>
-                <Image
-                  src={category.image}
-                  alt={category.title}
-                  fill
-                  sizes="(max-width: 700px) 74vw, 22vw"
-                />
-                {category.badge && <span>{category.badge}</span>}
-              </div>
-              <h3>{category.title}</h3>
-              <p>{category.note}</p>
-            </Link>
-          ))}
-        </div>
+        <CategoryCarousel categories={shopCategories} />
       </section>
 
       <section className="favourites section-pad">
@@ -141,8 +109,8 @@ export default function HomePage() {
       <section className="spotlight-section section-pad">
         <div className="section-heading reveal">
           <div>
-            <span className="eyebrow">A little inspiration</span>
-            <h2>Find Your Comfort Zone</h2>
+            <span className="eyebrow">Choose with confidence</span>
+            <h2>Find Your Way to Better Sleep</h2>
           </div>
         </div>
         <div className="spotlight-grid">
@@ -163,7 +131,7 @@ export default function HomePage() {
               <span>{item.note}</span>
               <h3>{item.title}</h3>
               <b>
-                Shop now <ArrowIcon size={16} />
+                {item.action} <ArrowIcon size={16} />
               </b>
             </Link>
           ))}
