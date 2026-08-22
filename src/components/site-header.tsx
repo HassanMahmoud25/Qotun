@@ -359,7 +359,7 @@ export function SiteHeader() {
       <AnimatePresence onExitComplete={() => setOpenSection(null)}>
         {menu && (
           <motion.div
-            className="mobile-menu is-open bg-red-600 p-100"
+            className="mobile-menu is-open"
             role="dialog"
             aria-modal="true"
             aria-label="Navigation menu"

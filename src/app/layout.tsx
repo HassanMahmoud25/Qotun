@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { SiteShell } from "@/components/site-shell";
 import { StoreProvider } from "@/components/store-provider";
 import "./globals.css";
@@ -27,6 +27,10 @@ export const metadata: Metadata = {
     description:
       "Exceptional Egyptian cotton bedding and bath linens, composed in Cairo for the rituals of home.",
   },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#fdfaf8",
 };
 
 export default function RootLayout({

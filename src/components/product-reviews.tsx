@@ -275,19 +275,19 @@ export function ProductReviews({
         <div>
           <span className="eyebrow">Shared by the Qotun community</span>
           <h2 id="reviews-title">Customer reviews</h2>
+          <button
+            type="button"
+            className="button button-dark"
+            onClick={() => {
+              setSubmitted(false);
+              setFormOpen((open) => !open);
+            }}
+            aria-expanded={formOpen}
+            aria-controls="review-form"
+          >
+            {formOpen ? "Close form" : "Write a review"}
+          </button>
         </div>
-        <button
-          type="button"
-          className="button button-dark"
-          onClick={() => {
-            setSubmitted(false);
-            setFormOpen((open) => !open);
-          }}
-          aria-expanded={formOpen}
-          aria-controls="review-form"
-        >
-          {formOpen ? "Close form" : "Write a review"}
-        </button>
       </div>
 
       {submitted && (

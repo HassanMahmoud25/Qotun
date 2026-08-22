@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { MobileTabBar } from "@/components/mobile-tab-bar";
 
 function AccountHeader() {
   return (
@@ -46,6 +47,7 @@ function AccountFooter() {
 export function SiteShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const focusedAccount = pathname === "/account/create";
+  const focusedCheckout = pathname === "/checkout";
 
   if (focusedAccount) {
     return (
@@ -62,6 +64,7 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
       <SiteHeader />
       {children}
       <SiteFooter />
+      {!focusedCheckout && <MobileTabBar />}
     </>
   );
 }

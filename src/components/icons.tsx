@@ -121,3 +121,21 @@ export const ChevronIcon = (p: IconProps) => (
     />
   </Icon>
 );
+export const HomeIcon = (p: IconProps) => (
+  <Icon {...p}>
+    <path d="m3 11 9-8 9 8" />
+    <path d="M5 10v11h14V10M9 21v-7h6v7" />
+  </Icon>
+);
+export const ShopIcon = (p: IconProps) => (
+  <Icon {...p}>
+    <path d="M4 10h16l-1 11H5L4 10Z" />
+    <path d="m3 10 2-6h14l2 6M8 10v1a2 2 0 0 0 4 0v-1M12 10v1a2 2 0 0 0 4 0v-1" />
+  </Icon>
+);
+export const BedIcon = (p: IconProps) => (
+  <Icon {...p}>
+    <path d="M3 19v-8M21 19v-6a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v3M3 16h18" />
+    <path d="M7 11V8H3v8" />
+  </Icon>
+);

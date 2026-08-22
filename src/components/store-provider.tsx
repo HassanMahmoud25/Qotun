@@ -8,6 +8,7 @@ import { AnimatePresence, motion, MotionConfig } from "framer-motion";
 import {
   ArrowIcon,
   BagIcon,
+  ChevronIcon,
   CloseIcon,
   HeartIcon,
   MinusIcon,
@@ -241,6 +242,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
 function CompareDock() {
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState(false);
+  const [dockedAtTop, setDockedAtTop] = useState(false);
   const {
     cartOpen,
     clearCompare,
@@ -266,7 +268,7 @@ function CompareDock() {
     <AnimatePresence initial={false} mode="wait">
       {!hidden && collapsed && !compareNotice ? (
         <motion.aside
-          className="compare-dock compare-dock--collapsed"
+          className={`compare-dock compare-dock--collapsed ${dockedAtTop ? "compare-dock--top" : ""}`}
           aria-label="Product comparison"
           key="collapsed"
           initial={{ opacity: 0, y: 14, scale: 0.96 }}
@@ -288,7 +290,7 @@ function CompareDock() {
         </motion.aside>
       ) : !hidden ? (
         <motion.aside
-          className="compare-dock"
+          className={`compare-dock ${dockedAtTop ? "compare-dock--top" : ""}`}
           aria-label="Product comparison"
           key="expanded"
           initial={{ opacity: 0, y: 28, scale: 0.985 }}
@@ -325,14 +327,6 @@ function CompareDock() {
                   {selected.length} of {compareLimit}
                 </strong>
                 <button onClick={clearCompare}>Clear</button>
-                <button
-                  className="compare-dock__collapse"
-                  onClick={() => setCollapsed(true)}
-                  aria-label="Minimize comparison"
-                  title="Minimize comparison"
-                >
-                  <MinusIcon size={14} />
-                </button>
               </div>
             </div>
             <div className="compare-dock__pieces">
@@ -386,6 +380,24 @@ function CompareDock() {
               ) : (
                 <span>Add one more piece</span>
               )}
+            </div>
+            <div className="compare-dock__controls">
+              <button
+                className="compare-dock__move"
+                onClick={() => setDockedAtTop((atTop) => !atTop)}
+                aria-label={`Move comparison to the ${dockedAtTop ? "bottom" : "top"}`}
+                title={`Move comparison to the ${dockedAtTop ? "bottom" : "top"}`}
+              >
+                <ChevronIcon size={14} />
+              </button>
+              <button
+                className="compare-dock__collapse"
+                onClick={() => setCollapsed(true)}
+                aria-label="Minimize comparison"
+                title="Minimize comparison"
+              >
+                <MinusIcon size={14} />
+              </button>
             </div>
           </div>
         </motion.aside>
