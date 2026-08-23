@@ -76,8 +76,33 @@ export const PlusIcon = (p: IconProps) => (
     <path d="M12 5v14M5 12h14" />
   </Icon>
 );
+export const BellIcon = (p: IconProps) => (
+  <Icon {...p}>
+    <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9" />
+    <path d="M10 21h4" />
+  </Icon>
+);
+export const LiveIcon = (p: IconProps) => (
+  <Icon {...p}>
+    <circle cx="12" cy="12" r="2.25" fill="currentColor" stroke="none" />
+    <path d="M7.8 7.8a6 6 0 0 0 0 8.4M16.2 7.8a6 6 0 0 1 0 8.4" />
+    <path d="M4.6 4.6a10.5 10.5 0 0 0 0 14.8M19.4 4.6a10.5 10.5 0 0 1 0 14.8" />
+  </Icon>
+);
+export const MoreIcon = (p: IconProps) => (
+  <Icon {...p}>
+    <circle cx="5" cy="12" r="1" fill="currentColor" stroke="none" />
+    <circle cx="12" cy="12" r="1" fill="currentColor" stroke="none" />
+    <circle cx="19" cy="12" r="1" fill="currentColor" stroke="none" />
+  </Icon>
+);
+export const DownloadIcon = (p: IconProps) => (
+  <Icon {...p}>
+    <path d="M12 3v12M7.5 10.5 12 15l4.5-4.5M5 21h14" />
+  </Icon>
+);
 export const ViewIcon = (p: IconProps) => (
-  <Icon {...p} className="min-w-4.5 h-auto">
+  <Icon {...p}>
     <path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z" />
     <circle cx="12" cy="12" r="2.5" />
   </Icon>

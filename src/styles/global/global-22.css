@@ -1,0 +1,375 @@
+@media (max-width: 800px) {
+  .announcement {
+    display: none;
+  }
+
+  .site-header {
+    height: 62px;
+    padding-inline: 12px;
+    border-bottom-color: rgba(40, 52, 85, 0.08);
+    background: rgba(253, 250, 248, 0.88);
+    box-shadow: 0 8px 30px rgba(27, 34, 55, 0.04);
+    backdrop-filter: blur(22px) saturate(1.35);
+  }
+
+  .site-header .account-menu,
+  .site-header .bag-button {
+    display: none;
+  }
+
+  .site-header .header-actions {
+    right: 12px;
+  }
+
+  .site-header .header-menu-button,
+  .site-header .header-search-trigger {
+    width: 42px;
+    height: 42px;
+    min-height: 42px;
+    border-radius: 50%;
+  }
+
+  .mobile-menu {
+    z-index: 90;
+  }
+
+  .brand-logo,
+  .brand-logo img {
+    width: 112px;
+  }
+
+  .section-pad {
+    padding: 54px var(--mobile-gutter);
+  }
+
+  .section-heading {
+    margin-bottom: 24px;
+  }
+
+  .section-heading h2 {
+    margin-top: 6px;
+    font-size: 32px;
+    letter-spacing: -0.045em;
+  }
+
+  .home-hero {
+    width: calc(100% - 24px);
+    height: calc(100svh - 150px);
+    min-height: 570px;
+    max-height: 720px;
+    margin: 12px;
+    border-radius: 28px;
+    box-shadow: 0 18px 55px rgba(20, 28, 49, 0.16);
+  }
+
+  .home-hero__content {
+    width: calc(100% - 36px);
+    margin: 0 18px 58px;
+  }
+
+  .home-hero h1,
+  .home-hero-slide h2 {
+    max-width: 340px;
+    margin: 11px 0 14px;
+    font-size: clamp(41px, 12.4vw, 52px);
+    line-height: 0.94;
+  }
+
+  .home-hero__content > p {
+    max-width: 335px;
+    margin-bottom: 20px;
+    font-size: 13px;
+    line-height: 1.55;
+  }
+
+  .home-hero .button {
+    min-height: 48px;
+    border-radius: 13px;
+    font-size: 9px;
+  }
+
+  .hero-controls {
+    bottom: 18px;
+  }
+
+  .trust-strip {
+    width: calc(100% - 28px);
+    min-height: 48px;
+    margin: 8px 14px 0;
+    padding: 10px 16px;
+    gap: 18px;
+    border: 1px solid rgba(40, 52, 85, 0.08);
+    border-radius: 16px;
+    background: white;
+    box-shadow: 0 8px 28px rgba(20, 28, 49, 0.06);
+    color: var(--navy);
+  }
+
+  .trust-strip span:first-child {
+    color: var(--navy);
+  }
+
+  .category-rail,
+  .spotlight-grid,
+  .product-grid--featured,
+  .review-grid {
+    margin-inline: calc(var(--mobile-gutter) * -1);
+    padding: 0 var(--mobile-gutter) 10px;
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+
+  .category-tile {
+    min-width: 70vw;
+    scroll-snap-align: center;
+  }
+
+  .category-tile > div,
+  .product-card__media {
+    border-radius: 22px;
+  }
+
+  .favourites {
+    width: calc(100% - 20px);
+    margin: 10px;
+    padding-inline: 12px;
+    border-radius: 28px;
+  }
+
+  .product-grid--featured .product-card {
+    min-width: min(74vw, 310px);
+    scroll-snap-align: center;
+  }
+
+  .spotlight-card {
+    min-width: min(82vw, 340px);
+    border-radius: 24px;
+    scroll-snap-align: center;
+  }
+
+  .reviews-heading {
+    margin-bottom: 28px;
+    text-align: left;
+  }
+
+  .review-grid {
+    border: 0;
+  }
+
+  .review-grid article {
+    min-width: min(82vw, 340px);
+    min-height: 280px;
+    border: 1px solid rgba(40, 52, 85, 0.1);
+    border-radius: 22px;
+    background: rgba(255, 255, 255, 0.55);
+    scroll-snap-align: center;
+  }
+
+  .brand-pillars {
+    gap: 10px;
+  }
+
+  .brand-pillars > div,
+  .brand-pillars > div:first-child,
+  .brand-pillars > div:last-child {
+    border: 1px solid rgba(40, 52, 85, 0.1);
+    border-radius: 20px;
+    background: white;
+  }
+
+  .bundle-feature {
+    width: calc(100% - 20px);
+    margin: 10px;
+    padding-inline: 18px;
+    gap: 30px;
+    border-radius: 28px;
+  }
+
+  .bundle-feature__image {
+    overflow: hidden;
+    border-radius: 22px;
+  }
+
+  .hospitality-banner {
+    width: calc(100% - 20px);
+    min-height: 590px;
+    margin: 10px;
+    border-radius: 28px;
+  }
+
+  .hospitality-banner > img,
+  .hospitality-banner__overlay {
+    border-radius: inherit;
+  }
+}
+
+/* Qotun's mobile surfaces stay architectural rather than pill-shaped. */
+@media (max-width: 800px) {
+  .site-header .header-menu-button,
+  .site-header .header-search-trigger,
+  .mobile-tab-bar a,
+  .mobile-tab-bar button,
+  .mobile-menu,
+  .home-hero,
+  .home-hero .button,
+  .trust-strip,
+  .category-tile > div,
+  .product-card__media,
+  .favourites,
+  .spotlight-card,
+  .review-grid article,
+  .brand-pillars > div,
+  .brand-pillars > div:first-child,
+  .brand-pillars > div:last-child,
+  .bundle-feature,
+  .bundle-feature__image,
+  .hospitality-banner,
+  .hospitality-banner > img,
+  .hospitality-banner__overlay {
+    border-radius: 0;
+  }
+}
+
+/* A quieter, more compact type scale across the storefront. */
+body {
+  font-size: 14px;
+}
+
+.eyebrow {
+  font-size: 11px;
+}
+
+.home-hero h1,
+.home-hero-slide h2 {
+  font-size: clamp(52px, 5.8vw, 86px);
+}
+
+.section-heading h2,
+.reviews-heading h2,
+.brand-intro h2,
+.bundle-feature h2,
+.hospitality-banner h2,
+.newsletter h2 {
+  font-size: clamp(32px, 3.8vw, 52px);
+}
+
+.collection-hero h1,
+.collection-hero--visual h1,
+.content-hero h1,
+.page-heading h1,
+.account-page h1,
+.checkout-grid h1 {
+  font-size: clamp(44px, 5.5vw, 72px);
+}
+
+.product-info h1 {
+  font-size: clamp(34px, 3.7vw, 50px);
+}
+
+.product-reviews__heading h2 {
+  font-size: clamp(48px, 6.2vw, 88px);
+}
+
+.bed-builder-intro h1,
+.compare-hero h1,
+.compare-empty h1 {
+  font-size: clamp(48px, 6vw, 82px);
+}
+
+.bed-builder-note h2,
+.fabric-intro h2,
+.fabric-section-heading h2,
+.fabric-card__body h2,
+.fabric-count-story h2,
+.fabric-result h2,
+.fabric-final-cta h2 {
+  font-size: clamp(40px, 4.8vw, 68px);
+}
+
+.fabric-hero__copy h1 {
+  font-size: clamp(56px, 6vw, 92px);
+}
+
+@media (max-width: 800px) {
+  body {
+    font-size: 13px;
+  }
+
+  .eyebrow {
+    font-size: 9px;
+  }
+
+  .home-hero h1,
+  .home-hero-slide h2 {
+    font-size: clamp(34px, 10vw, 44px);
+    line-height: 0.98;
+  }
+
+  .home-hero__content > p,
+  .collection-hero--visual p,
+  .bed-builder-intro > p,
+  .fabric-hero__copy > p,
+  .compare-hero p {
+    font-size: 12px;
+  }
+
+  .section-heading h2,
+  .reviews-heading h2 {
+    font-size: 28px;
+  }
+
+  .brand-intro h2,
+  .bundle-feature h2,
+  .hospitality-banner h2,
+  .newsletter h2,
+  .collection-note h2 {
+    font-size: 36px;
+    line-height: 1.02;
+  }
+
+  .collection-hero h1,
+  .collection-hero--visual h1,
+  .content-hero h1,
+  .page-heading h1,
+  .account-page h1,
+  .checkout-grid h1 {
+    font-size: 42px;
+  }
+
+  .product-info h1 {
+    font-size: 31px;
+  }
+
+  .product-card__body h3 {
+    font-size: 15px;
+  }
+
+  .product-reviews__heading h2 {
+    font-size: clamp(42px, 12vw, 54px);
+  }
+
+  .bed-builder-intro h1,
+  .compare-hero h1,
+  .compare-empty h1 {
+    font-size: 44px;
+  }
+
+  .bed-builder-note h2,
+  .fabric-intro h2,
+  .fabric-section-heading h2,
+  .fabric-card__body h2,
+  .fabric-count-story h2,
+  .fabric-result h2,
+  .fabric-final-cta h2,
+  .compare-empty__suggestions h2,
+  .compare-picker__head h2 {
+    font-size: 38px;
+  }
+
+  .fabric-hero__copy h1 {
+    font-size: 50px;
+  }
+}

@@ -3,8 +3,7 @@ import { ComparePage } from "@/components/compare-page";
 
 export const metadata: Metadata = {
   title: "Compare products",
-  description:
-    "Compare Qotun bedding, bath linens and bundles side by side.",
+  description: "Compare Qotun bedding, bath linens and bundles side by side.",
 };
 
 export default function Page() {

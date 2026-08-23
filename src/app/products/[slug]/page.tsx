@@ -40,7 +40,7 @@ export default async function ProductPage({
       <ProductDetail product={product} />
 
       <ProductReviews productSlug={product.slug} productName={product.name} />
-      
+
       <section className="related-products">
         <div className="section-heading">
           <div>

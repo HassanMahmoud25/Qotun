@@ -187,17 +187,20 @@ export function ProductReviews({
   const [submitted, setSubmitted] = useState(false);
   const [savedReviews, setSavedReviews] = useState<Review[]>([]);
   const [helpfulVotes, setHelpfulVotes] = useState<Set<string>>(new Set());
-  const totalReviews = ratingBreakdown.reduce((sum, item) => sum + item.count, 0);
+  const totalReviews = ratingBreakdown.reduce(
+    (sum, item) => sum + item.count,
+    0,
+  );
   const average =
-    ratingBreakdown.reduce(
-      (sum, item) => sum + item.rating * item.count,
-      0,
-    ) / totalReviews;
+    ratingBreakdown.reduce((sum, item) => sum + item.rating * item.count, 0) /
+    totalReviews;
 
   useEffect(() => {
     let timer: ReturnType<typeof setTimeout> | undefined;
     try {
-      const stored = window.localStorage.getItem(`qotun-reviews-${productSlug}`);
+      const stored = window.localStorage.getItem(
+        `qotun-reviews-${productSlug}`,
+      );
       if (stored) {
         const parsed = JSON.parse(stored) as Review[];
         timer = setTimeout(() => setSavedReviews(parsed), 0);
@@ -270,7 +273,11 @@ export function ProductReviews({
   };
 
   return (
-    <section className="product-reviews" id="reviews" aria-labelledby="reviews-title">
+    <section
+      className="product-reviews"
+      id="reviews"
+      aria-labelledby="reviews-title"
+    >
       <div className="product-reviews__heading">
         <div>
           <span className="eyebrow">Shared by the Qotun community</span>
@@ -298,7 +305,11 @@ export function ProductReviews({
       )}
 
       {formOpen && (
-        <form className="product-review-form" id="review-form" onSubmit={submitReview}>
+        <form
+          className="product-review-form"
+          id="review-form"
+          onSubmit={submitReview}
+        >
           <div className="product-review-form__intro">
             <span className="eyebrow">Your experience</span>
             <h3>Review {productName}</h3>
@@ -336,12 +347,17 @@ export function ProductReviews({
             </label>
             <label className="is-wide">
               Your review
-              <textarea name="review" required minLength={20} maxLength={1000} />
+              <textarea
+                name="review"
+                required
+                minLength={20}
+                maxLength={1000}
+              />
             </label>
           </div>
           <label className="product-review-form__recommend">
-            <input type="checkbox" name="recommended" defaultChecked />
-            I would recommend this product to a friend
+            <input type="checkbox" name="recommended" defaultChecked />I would
+            recommend this product to a friend
           </label>
           <button className="button button-dark" type="submit">
             Submit review
@@ -353,7 +369,10 @@ export function ProductReviews({
         <div className="product-reviews__score">
           <strong>{average.toFixed(1)}</strong>
           <div>
-            <Stars rating={average} label={`${average.toFixed(1)} out of 5 stars`} />
+            <Stars
+              rating={average}
+              label={`${average.toFixed(1)} out of 5 stars`}
+            />
             <b>Exceptional</b>
             <span>Based on {totalReviews + savedReviews.length} reviews</span>
             <small>98% would recommend</small>
@@ -416,7 +435,10 @@ export function ProductReviews({
           </label>
           <label>
             <span>Sort by</span>
-            <select value={sort} onChange={(event) => setSort(event.target.value)}>
+            <select
+              value={sort}
+              onChange={(event) => setSort(event.target.value)}
+            >
               <option value="recent">Most recent</option>
               <option value="helpful">Most helpful</option>
               <option value="highest">Highest rated</option>
@@ -437,7 +459,8 @@ export function ProductReviews({
         ))}
         {reviews.length === 0 && (
           <div className="product-reviews__empty">
-            No reviews at this rating yet. Be the first to share your experience.
+            No reviews at this rating yet. Be the first to share your
+            experience.
           </div>
         )}
       </div>

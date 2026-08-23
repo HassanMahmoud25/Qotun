@@ -1,0 +1,351 @@
+.manifesto p em {
+  font-family: Georgia, serif;
+  font-weight: 400;
+}
+
+.manifestoOrbit {
+  width: min(520px, 70vw);
+  aspect-ratio: 1;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(40, 52, 85, 0.16);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.manifestoOrbit:after {
+  position: absolute;
+  inset: 12%;
+  border: 1px dashed rgba(40, 52, 85, 0.13);
+  border-radius: 50%;
+  content: "";
+}
+
+.manifestoOrbit span {
+  color: rgba(40, 52, 85, 0.05);
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 390px;
+  font-weight: 700;
+}
+
+.principles {
+  padding: clamp(90px, 10vw, 150px) clamp(24px, 5vw, 78px);
+}
+
+.principles header {
+  max-width: 660px;
+  margin-bottom: 70px;
+}
+
+.principles h2 {
+  margin: 17px 0 0;
+  font-size: clamp(46px, 5.5vw, 78px);
+  line-height: 1;
+}
+
+.principleGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.principleGrid article {
+  min-height: 390px;
+  padding: 34px clamp(25px, 3vw, 48px) 45px;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid var(--line);
+}
+
+.principleGrid article:last-child {
+  border-right: 0;
+}
+
+.principleGrid article > span {
+  color: #8d9098;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+}
+
+.principleIcon {
+  width: 58px;
+  height: 58px;
+  margin: 44px 0 38px;
+  position: relative;
+  border: 1px solid var(--navy);
+  border-radius: 50%;
+}
+
+.principleIcon i:first-child {
+  width: 23px;
+  height: 23px;
+  position: absolute;
+  top: 17px;
+  left: 17px;
+  border: 1px solid var(--navy);
+  border-radius: 50% 50% 45% 55%;
+}
+
+.principleIcon i:last-child {
+  width: 1px;
+  height: 74px;
+  position: absolute;
+  top: -9px;
+  left: 28px;
+  background: var(--navy);
+  transform: rotate(45deg);
+}
+
+.principleGrid article:nth-child(2) .principleIcon {
+  border-radius: 4px;
+  transform: rotate(45deg);
+}
+.principleGrid article:nth-child(2) .principleIcon i {
+  transform: rotate(-45deg);
+}
+.principleGrid article:nth-child(3) .principleIcon {
+  border-style: dashed;
+}
+
+.principleGrid h3 {
+  margin: auto 0 13px;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(25px, 2.4vw, 35px);
+}
+
+.principleGrid p {
+  max-width: 340px;
+  margin: 0;
+  color: #6b6e76;
+  line-height: 1.75;
+}
+
+.epilogue {
+  min-height: 720px;
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  background: #10172a;
+  color: #fff;
+}
+
+.epilogueImage {
+  min-height: 620px;
+  position: relative;
+}
+.epilogueImage img {
+  object-fit: cover;
+  object-position: center 35%;
+}
+
+.epilogueCopy {
+  padding: clamp(75px, 8vw, 130px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.epilogueCopy h2 {
+  margin: 22px 0 25px;
+  color: #fff;
+  font-size: clamp(55px, 6.2vw, 90px);
+  line-height: 0.95;
+}
+
+.epilogueCopy p {
+  max-width: 510px;
+  color: rgba(255, 255, 255, 0.67);
+  font-size: 16px;
+  line-height: 1.8;
+}
+
+.epilogueActions {
+  margin-top: 30px;
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.bathLink {
+  padding-bottom: 5px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+@keyframes hero-breathe {
+  from {
+    transform: scale(1.07);
+  }
+  to {
+    transform: scale(1.015);
+  }
+}
+
+@media (max-width: 980px) {
+  .chapterCopy {
+    padding: 70px 48px;
+  }
+  .originCopy,
+  .epilogueCopy {
+    padding: 75px 48px;
+  }
+  .principleGrid article {
+    padding-inline: 25px;
+  }
+}
+
+@media (max-width: 800px) {
+  .hero {
+    min-height: calc(100svh - 96px);
+  }
+  .heroContent {
+    margin: 0 24px 130px;
+  }
+  .hero h1 {
+    font-size: clamp(56px, 16vw, 82px);
+  }
+  .heroFooter {
+    grid-template-columns: 1fr 1fr;
+  }
+  .heroFooter a {
+    display: none;
+  }
+  .heroFooter span:last-child {
+    text-align: right;
+  }
+
+  .prologue {
+    width: calc(100% - 40px);
+    padding: 76px 0 84px;
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  .prologueIndex {
+    padding-top: 0;
+  }
+
+  .chapter {
+    grid-template-columns: 1fr;
+  }
+  .chapter:nth-child(even) .chapterVisual {
+    order: 0;
+  }
+  .chapterVisual {
+    min-height: 480px;
+  }
+  .chapterCopy {
+    padding: 65px 24px 78px;
+  }
+  .chapterMeta {
+    margin-bottom: 44px;
+  }
+
+  .origin,
+  .epilogue {
+    grid-template-columns: 1fr;
+  }
+  .originImage,
+  .epilogueImage {
+    min-height: 520px;
+  }
+  .cottonSeal {
+    right: 20px;
+    bottom: -55px;
+  }
+  .originCopy,
+  .epilogueCopy {
+    padding: 105px 24px 85px;
+  }
+
+  .manifesto {
+    min-height: 560px;
+    padding-inline: 24px;
+  }
+  .manifestoOrbit span {
+    font-size: 260px;
+  }
+
+  .principles {
+    padding-inline: 20px;
+  }
+  .principleGrid {
+    grid-template-columns: 1fr;
+  }
+  .principleGrid article {
+    min-height: 330px;
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .principleGrid article:last-child {
+    border-bottom: 0;
+  }
+}
+
+@media (max-width: 520px) {
+  .hero {
+    min-height: 690px;
+  }
+  .heroImage {
+    object-position: 63% center;
+  }
+  .hero h1 {
+    font-size: 57px;
+  }
+  .heroContent p br {
+    display: none;
+  }
+  .heroFooter {
+    font-size: 7px;
+  }
+
+  .prologueCopy .dropcap {
+    font-size: clamp(39px, 11vw, 48px);
+    line-height: 1;
+  }
+  .prologueCopy > p:last-child {
+    padding-top: 20px;
+    font-size: 15px;
+    line-height: 1.75;
+  }
+  .chapterVisual {
+    min-height: 400px;
+  }
+  .chapterCopy h2 {
+    font-size: 43px;
+  }
+  .chapterMeta {
+    grid-template-columns: auto 42px auto;
+  }
+
+  .originImage,
+  .epilogueImage {
+    min-height: 430px;
+  }
+  .originCopy h2 {
+    font-size: 45px;
+  }
+  .manifesto p {
+    font-size: 47px;
+  }
+  .principles h2 {
+    font-size: 45px;
+  }
+
+  .epilogueActions {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .heroImage {
+    animation: none;
+  }
+}

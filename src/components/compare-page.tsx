@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useMemo, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { ArrowIcon, CheckIcon, CloseIcon, PlusIcon } from "@/components/icons";
 import { useStore } from "@/components/store-provider";
 import { formatPrice, products, type Product } from "@/lib/data";
@@ -70,7 +71,10 @@ export function ComparePage() {
             Explore the collection <ArrowIcon size={17} />
           </Link>
         </section>
-        <section className="compare-empty__suggestions" aria-labelledby="compare-start">
+        <section
+          className="compare-empty__suggestions"
+          aria-labelledby="compare-start"
+        >
           <div>
             <span className="eyebrow">A helpful place to start</span>
             <h2 id="compare-start">Most compared</h2>
@@ -79,7 +83,12 @@ export function ComparePage() {
             {products.slice(0, 3).map((product) => (
               <article key={product.slug}>
                 <span className="compare-empty__image">
-                  <Image src={product.image} alt={product.name} fill sizes="240px" />
+                  <Image
+                    src={product.image}
+                    alt={product.name}
+                    fill
+                    sizes="240px"
+                  />
                 </span>
                 <div>
                   <small>{product.eyebrow}</small>
@@ -142,7 +151,9 @@ export function ComparePage() {
               disabled={selected.length < 2}
               onChange={(event) => setShowOnlyDifferences(event.target.checked)}
             />
-            <i aria-hidden="true"><CheckIcon size={13} /></i>
+            <i aria-hidden="true">
+              <CheckIcon size={13} />
+            </i>
             Show differences only
           </label>
           <div>
@@ -159,7 +170,9 @@ export function ComparePage() {
         <div className="compare-scroll">
           <div
             className="compare-grid"
-            style={{ "--compare-count": selected.length } as React.CSSProperties}
+            style={
+              { "--compare-count": selected.length } as React.CSSProperties
+            }
           >
             <div className="compare-grid__corner">
               <span>At a glance</span>
@@ -174,29 +187,48 @@ export function ComparePage() {
                 >
                   <CloseIcon size={16} />
                 </button>
-                <Link href={`/products/${product.slug}`} className="compare-product__image">
-                  <Image src={product.image} alt={product.name} fill sizes="(max-width: 700px) 58vw, 24vw" />
+                <Link
+                  href={`/products/${product.slug}`}
+                  className="compare-product__image"
+                >
+                  <Image
+                    src={product.image}
+                    alt={product.name}
+                    fill
+                    sizes="(max-width: 700px) 58vw, 24vw"
+                  />
                   {product.badge && <span>{product.badge}</span>}
                 </Link>
                 <span className="eyebrow">{product.eyebrow}</span>
-                <Link href={`/products/${product.slug}`}><h2>{product.name}</h2></Link>
+                <Link href={`/products/${product.slug}`}>
+                  <h2>{product.name}</h2>
+                </Link>
                 <p>
                   <strong>{formatPrice(product.price)}</strong>
-                  {product.compareAt && <del>{formatPrice(product.compareAt)}</del>}
+                  {product.compareAt && (
+                    <del>{formatPrice(product.compareAt)}</del>
+                  )}
                 </p>
-                <button className="button button-dark" onClick={() => add(product.slug)}>
+                <button
+                  className="button button-dark"
+                  onClick={() => add(product.slug)}
+                >
                   Add to bag
                 </button>
               </article>
             ))}
 
             {rows.map((row) => {
-              const rowIndex = details[0].findIndex((detail) => detail.label === row.label);
+              const rowIndex = details[0].findIndex(
+                (detail) => detail.label === row.label,
+              );
               return (
                 <div className="compare-row" key={row.label}>
                   <strong>{row.label}</strong>
                   {selected.map((product, productIndex) => (
-                    <span key={product.slug}>{details[productIndex][rowIndex]?.value ?? "—"}</span>
+                    <span key={product.slug}>
+                      {details[productIndex][rowIndex]?.value ?? "—"}
+                    </span>
                   ))}
                 </div>
               );
@@ -205,42 +237,80 @@ export function ComparePage() {
         </div>
       </section>
 
-      {pickerOpen && (
-        <div className="compare-picker" role="dialog" aria-modal="true" aria-label="Add a product">
-          <button className="compare-picker__scrim" onClick={() => setPickerOpen(false)} aria-label="Close product picker" />
-          <section>
-            <div className="compare-picker__head">
-              <div>
-                <span className="eyebrow">Complete your edit</span>
-                <h2>Add a piece</h2>
-              </div>
-              <button onClick={() => setPickerOpen(false)} aria-label="Close product picker"><CloseIcon /></button>
-            </div>
-            <input
-              autoFocus
-              value={query}
-              onChange={(event) => setQuery(event.target.value)}
-              placeholder="Search by product or collection"
-              aria-label="Search products to compare"
+      <AnimatePresence>
+        {pickerOpen && (
+          <motion.div
+            className="compare-picker"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Add a product"
+            initial="closed"
+            animate="open"
+            exit="closed"
+          >
+            <motion.button
+              className="compare-picker__scrim"
+              onClick={() => setPickerOpen(false)}
+              aria-label="Close product picker"
+              variants={{ closed: { opacity: 0 }, open: { opacity: 1 } }}
+              transition={{ duration: 0.22 }}
             />
-            <div className="compare-picker__results">
-              {available.length ? available.map((product) => (
-                <button key={product.slug} onClick={() => addProduct(product)}>
-                  <span><Image src={product.image} alt="" fill sizes="72px" /></span>
-                  <span>
-                    <small>{product.category} · {product.subcategory}</small>
-                    <strong>{product.name}</strong>
-                    <em>{formatPrice(product.price)}</em>
-                  </span>
-                  <PlusIcon size={18} />
+            <motion.section
+              variants={{
+                closed: { opacity: 0, y: 24, scale: 0.975 },
+                open: { opacity: 1, y: 0, scale: 1 },
+              }}
+              transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <div className="compare-picker__head">
+                <div>
+                  <span className="eyebrow">Complete your edit</span>
+                  <h2>Add a piece</h2>
+                </div>
+                <button
+                  onClick={() => setPickerOpen(false)}
+                  aria-label="Close product picker"
+                >
+                  <CloseIcon />
                 </button>
-              )) : (
-                <p>No more pieces match “{query.trim()}”. Try a broader search.</p>
-              )}
-            </div>
-          </section>
-        </div>
-      )}
+              </div>
+              <input
+                autoFocus
+                value={query}
+                onChange={(event) => setQuery(event.target.value)}
+                placeholder="Search by product or collection"
+                aria-label="Search products to compare"
+              />
+              <div className="compare-picker__results">
+                {available.length ? (
+                  available.map((product) => (
+                    <button
+                      key={product.slug}
+                      onClick={() => addProduct(product)}
+                    >
+                      <span>
+                        <Image src={product.image} alt="" fill sizes="72px" />
+                      </span>
+                      <span>
+                        <small>
+                          {product.category} · {product.subcategory}
+                        </small>
+                        <strong>{product.name}</strong>
+                        <em>{formatPrice(product.price)}</em>
+                      </span>
+                      <PlusIcon size={18} />
+                    </button>
+                  ))
+                ) : (
+                  <p>
+                    No more pieces match “{query.trim()}”. Try a broader search.
+                  </p>
+                )}
+              </div>
+            </motion.section>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </main>
   );
 }

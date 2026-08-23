@@ -39,11 +39,21 @@ export default function CreateAccountPage() {
             </div>
             <label>
               Email address
-              <input name="email" type="email" autoComplete="email" placeholder="you@example.com" />
+              <input
+                name="email"
+                type="email"
+                autoComplete="email"
+                placeholder="you@example.com"
+              />
             </label>
             <label>
               Password
-              <input name="password" type="password" autoComplete="new-password" placeholder="At least 8 characters" />
+              <input
+                name="password"
+                type="password"
+                autoComplete="new-password"
+                placeholder="At least 8 characters"
+              />
             </label>
             <label className="create-account__consent">
               <input type="checkbox" name="offers" />
@@ -74,7 +84,9 @@ export default function CreateAccountPage() {
           <ul>
             {benefits.map((benefit) => (
               <li key={benefit}>
-                <span><CheckIcon size={15} /></span>
+                <span>
+                  <CheckIcon size={15} />
+                </span>
                 {benefit}
               </li>
             ))}

@@ -1,0 +1,449 @@
+.product-accordions details {
+  border-bottom: 1px solid var(--line);
+}
+.product-accordions summary {
+  padding: 18px 0;
+  display: flex;
+  justify-content: space-between;
+  list-style: none;
+  color: var(--navy);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+.product-accordions details[open] summary svg {
+  transform: rotate(45deg);
+}
+.product-accordions details p {
+  color: #70716c;
+  font-size: 12px;
+  line-height: 1.75;
+}
+.related-products {
+  padding: 90px 0 120px;
+  border-top: 1px solid var(--line);
+}
+
+.content-page {
+  min-height: 70vh;
+}
+.content-hero {
+  padding: 110px 20px 90px;
+  background: var(--warm);
+  text-align: center;
+}
+.content-hero h1 {
+  max-width: 850px;
+  margin: 22px auto;
+  font-size: clamp(58px, 8vw, 105px);
+  line-height: 0.88;
+}
+.content-hero p {
+  max-width: 650px;
+  margin: 0 auto;
+  color: #63655f;
+  font-size: 17px;
+  line-height: 1.7;
+}
+.content-body {
+  width: min(990px, calc(100% - 40px));
+  margin: 0 auto;
+  padding: 80px 0 120px;
+}
+.content-body > section:not(.contact-layout) {
+  padding: 55px 0;
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  border-bottom: 1px solid var(--line);
+}
+.content-body > section > span {
+  color: var(--sage);
+  font:
+    500 20px var(--font-serif),
+    Georgia,
+    serif;
+}
+.content-body section h2 {
+  margin-bottom: 20px;
+  font-size: clamp(34px, 4vw, 52px);
+}
+.content-body section p {
+  max-width: 690px;
+  color: #676963;
+  line-height: 1.9;
+}
+.b2b-points ul {
+  padding: 0;
+  list-style: none;
+}
+.b2b-points li {
+  margin: 14px 0;
+  display: flex;
+  gap: 12px;
+  color: #62645f;
+}
+.b2b-points .button {
+  margin-top: 24px;
+}
+.contact-layout {
+  display: grid;
+  grid-template-columns: 0.75fr 1.25fr;
+  gap: 90px;
+}
+.contact-layout > div > div {
+  padding: 0 0 26px;
+  margin-bottom: 26px;
+  border-bottom: 1px solid var(--line);
+}
+.contact-layout > div span,
+.contact-layout label,
+.checkout-form label,
+.account-page label {
+  display: block;
+  color: #7a7b75;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.contact-layout > div a {
+  margin-top: 8px;
+  display: block;
+  font:
+    500 23px var(--font-serif),
+    Georgia,
+    serif;
+}
+.contact-layout > div p {
+  margin: 8px 0 0;
+  color: var(--ink);
+  line-height: 1.6;
+}
+.contact-layout form {
+  display: grid;
+  gap: 22px;
+}
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+.contact-layout input,
+.contact-layout textarea,
+.checkout-form input,
+.account-page input {
+  width: 100%;
+  padding: 13px 0;
+  border: 0;
+  border-bottom: 1px solid #a8a9a3;
+  outline: 0;
+  background: transparent;
+  letter-spacing: 0;
+  text-transform: none;
+}
+.contact-layout textarea {
+  resize: vertical;
+}
+.contact-layout .button {
+  justify-self: start;
+}
+
+.page-heading {
+  padding: 90px 0 55px;
+}
+.page-heading h1 {
+  margin: 15px 0;
+  font-size: clamp(52px, 6vw, 82px);
+}
+.cart-page {
+  padding-bottom: 120px;
+}
+.cart-page__grid {
+  display: grid;
+  grid-template-columns: 1fr 370px;
+  gap: 70px;
+}
+.cart-page__lines article {
+  padding: 24px 0;
+  display: grid;
+  grid-template-columns: 155px 1fr;
+  gap: 25px;
+  border-top: 1px solid var(--line);
+}
+.cart-page__image {
+  aspect-ratio: 0.82;
+  position: relative;
+  background: var(--warm);
+}
+.cart-page__image img {
+  object-fit: cover;
+}
+.cart-page__lines article > div {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.cart-page__title {
+  display: flex;
+  flex-direction: column;
+}
+.cart-page__title span,
+.cart-page__title small {
+  color: #81827d;
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.cart-page__title a {
+  margin: 7px 0;
+  font:
+    500 27px var(--font-serif),
+    Georgia,
+    serif;
+}
+.cart-page__foot {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+.cart-page__foot strong {
+  margin-left: auto;
+  color: var(--navy);
+  font-size: 12px;
+}
+.order-card {
+  padding: 34px;
+  align-self: start;
+  position: sticky;
+  top: 120px;
+  background: var(--white);
+}
+.order-card > div {
+  margin-top: 23px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+}
+.order-card hr {
+  margin: 22px 0;
+  border: 0;
+  border-top: 1px solid var(--line);
+}
+.order-card .order-total {
+  margin: 0 0 25px;
+  font-size: 17px;
+}
+.order-card > p {
+  color: #858680;
+  font-size: 9px;
+  line-height: 1.6;
+  text-align: center;
+}
+.empty-page {
+  min-height: 68vh;
+  padding: 100px 25px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.empty-page h1 {
+  margin: 18px 0;
+  font-size: clamp(55px, 7vw, 90px);
+}
+.empty-page p {
+  color: #71726d;
+}
+.empty-page .button {
+  margin-top: 20px;
+}
+
+.account-page {
+  min-height: 760px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+.account-page > section {
+  width: min(540px, 80%);
+  margin: auto;
+  padding: 80px 0;
+}
+.account-page h1 {
+  margin: 15px 0;
+  font-size: 70px;
+}
+.account-page > section > p {
+  color: #70716c;
+  line-height: 1.7;
+}
+.account-page form {
+  margin-top: 35px;
+  display: grid;
+  gap: 24px;
+}
+.account-page label > div {
+  position: relative;
+}
+.account-page label button {
+  position: absolute;
+  right: 0;
+  bottom: 12px;
+  border: 0;
+  background: transparent;
+  font-size: 10px;
+  text-transform: uppercase;
+}
+.account-page form > a {
+  color: #686a65;
+  font-size: 10px;
+  text-align: center;
+  text-decoration: underline;
+}
+.account-divider {
+  margin: 30px 0;
+  position: relative;
+  border-top: 1px solid var(--line);
+  text-align: center;
+}
+.account-divider span {
+  padding: 0 12px;
+  position: relative;
+  top: -8px;
+  background: var(--ivory);
+  color: #83847f;
+  font-size: 10px;
+}
+.account-page > aside {
+  padding: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  background:
+    linear-gradient(rgba(20, 33, 59, 0.3), rgba(20, 33, 59, 0.65)),
+    url("https://qotun.net/cdn/shop/files/Unit-500TC-lifestyle-U03.jpg?v=1786090924&width=1600")
+      center/cover;
+  color: white;
+}
+.account-page aside h2 {
+  margin: 20px 0;
+  font-size: 65px;
+}
+.account-page aside p {
+  max-width: 400px;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.7;
+}
+
+.search-page .page-heading form {
+  max-width: 700px;
+  display: flex;
+}
+.search-page .page-heading input {
+  flex: 1;
+  padding: 0 18px;
+  border: 1px solid var(--line);
+  border-right: 0;
+  background: rgba(255, 255, 255, 0.3);
+}
+.search-page .page-heading p {
+  color: #7b7c77;
+  font-size: 11px;
+}
+
+.checkout-page {
+  min-height: 100vh;
+  background: var(--white);
+}
+.checkout-brand {
+  height: 90px;
+  padding: 0 6vw;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--line);
+  color: #767772;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.checkout-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+}
+.checkout-grid > section {
+  width: min(650px, 82%);
+  margin: 0 auto;
+  padding: 80px 0 120px;
+}
+.checkout-grid h1 {
+  margin: 18px 0 45px;
+  font-size: clamp(48px, 5vw, 70px);
+  line-height: 0.95;
+}
+.checkout-form {
+  display: grid;
+  gap: 24px;
+}
+.checkout-method {
+  padding: 24px 0;
+  border-top: 1px solid var(--line);
+}
+.checkout-method > strong {
+  display: block;
+  margin-bottom: 14px;
+  color: var(--navy);
+  font-size: 11px;
+  text-transform: uppercase;
+}
+.checkout-method label {
+  padding: 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid var(--navy);
+}
+.checkout-method label input {
+  width: auto;
+}
+.checkout-method label span {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+.checkout-method label b {
+  color: var(--ink);
+  font-size: 11px;
+}
+.checkout-method label small {
+  margin-top: 5px;
+  color: #7b7c77;
+  font-size: 9px;
+}
+.checkout-method label em {
+  color: var(--ink);
+  font-size: 10px;
+  font-style: normal;
+  text-transform: none;
+}
+.checkout-form > p {
+  color: #8a8b85;
+  font-size: 9px;
+  text-align: center;
+}
+.checkout-grid > aside {
+  padding: 90px 7vw;
+  background: var(--warm);
+}
+.checkout-grid aside h2 {
+  margin: 18px 0;
+  font-size: 52px;
+}
+.checkout-grid aside > p {
+  color: #6c6d68;
+  line-height: 1.75;
+}
+.checkout-grid aside .button {
+  margin: 25px 0 35px;
+}

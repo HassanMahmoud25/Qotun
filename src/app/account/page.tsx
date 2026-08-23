@@ -7,8 +7,8 @@ export default function AccountPage() {
         <span className="eyebrow">Welcome back</span>
         <h1>Your Qotun</h1>
         <p>
-          Sign in to see orders, save addresses, and make returning to comfort
-          a little easier.
+          Sign in to see orders, save addresses, and make returning to comfort a
+          little easier.
         </p>
         <form>
           <label>
@@ -30,7 +30,10 @@ export default function AccountPage() {
         <div className="account-divider">
           <span>New to Qotun?</span>
         </div>
-        <Link href="/account/create" className="button button-outline button-full">
+        <Link
+          href="/account/create"
+          className="button button-outline button-full"
+        >
           Create an account
         </Link>
         <Link href="/collections/all" className="account-guest-link">

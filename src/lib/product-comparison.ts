@@ -71,7 +71,10 @@ export function comparisonDetails(product: Product): ComparisonDetail[] {
     : "—";
 
   return [
-    { label: "Collection", value: `${product.category} · ${product.subcategory}` },
+    {
+      label: "Collection",
+      value: `${product.category} · ${product.subcategory}`,
+    },
     { label: "Material", value: details.material },
     { label: "Feel", value: details.feel },
     { label: "Best for", value: details.bestFor },

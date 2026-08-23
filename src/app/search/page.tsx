@@ -1,3 +1,39 @@
 import { ProductCard } from "@/components/product-card";
 import { products } from "@/lib/data";
-export default async function SearchPage({ searchParams }: PageProps<"/search">) { const params = await searchParams; const q = typeof params.q === "string" ? params.q : ""; const matches = q ? products.filter((p) => `${p.name} ${p.category} ${p.subcategory} ${p.description}`.toLowerCase().includes(q.toLowerCase())) : products; return <main className="search-page page-shell"><header className="page-heading"><span className="eyebrow">Search Qotun</span><h1>{q ? `Results for “${q}”` : "What will make home feel better?"}</h1><form action="/search"><input name="q" defaultValue={q} placeholder="Search the collection" /><button className="button button-dark">Search</button></form><p>{matches.length} {matches.length === 1 ? "piece" : "pieces"} found</p></header><div className="product-grid collection-grid">{matches.map((product, index) => <ProductCard key={product.slug} product={product} index={index} />)}</div></main>; }
+export default async function SearchPage({
+  searchParams,
+}: PageProps<"/search">) {
+  const params = await searchParams;
+  const q = typeof params.q === "string" ? params.q : "";
+  const matches = q
+    ? products.filter((p) =>
+        `${p.name} ${p.category} ${p.subcategory} ${p.description}`
+          .toLowerCase()
+          .includes(q.toLowerCase()),
+      )
+    : products;
+  return (
+    <main className="search-page page-shell">
+      <header className="page-heading">
+        <span className="eyebrow">Search Qotun</span>
+        <h1>{q ? `Results for “${q}”` : "What will make home feel better?"}</h1>
+        <form action="/search">
+          <input
+            name="q"
+            defaultValue={q}
+            placeholder="Search the collection"
+          />
+          <button className="button button-dark">Search</button>
+        </form>
+        <p>
+          {matches.length} {matches.length === 1 ? "piece" : "pieces"} found
+        </p>
+      </header>
+      <div className="product-grid collection-grid">
+        {matches.map((product, index) => (
+          <ProductCard key={product.slug} product={product} index={index} />
+        ))}
+      </div>
+    </main>
+  );
+}

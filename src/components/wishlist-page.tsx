@@ -7,11 +7,7 @@ import { useStore } from "@/components/store-provider";
 import { formatPrice, products } from "@/lib/data";
 
 export function WishlistPage() {
-  const {
-    wishlist,
-    removeFromWishlist,
-    setQuickView,
-  } = useStore();
+  const { wishlist, removeFromWishlist, setQuickView } = useStore();
   const savedProducts = wishlist
     .map((slug) => products.find((product) => product.slug === slug))
     .filter((product) => product !== undefined);
@@ -43,8 +39,8 @@ export function WishlistPage() {
           <h1>Wishlist</h1>
         </div>
         <p>
-          {savedProducts.length} {savedProducts.length === 1 ? "piece" : "pieces"}{" "}
-          saved for later.
+          {savedProducts.length}{" "}
+          {savedProducts.length === 1 ? "piece" : "pieces"} saved for later.
         </p>
       </header>
 
@@ -98,7 +94,10 @@ export function WishlistPage() {
             Your wishlist is saved on this device. Choose your preferred size
             and colour when you are ready to add a piece to your bag.
           </p>
-          <Link href="/collections/all" className="button button-outline button-full">
+          <Link
+            href="/collections/all"
+            className="button button-outline button-full"
+          >
             Continue exploring
           </Link>
         </aside>

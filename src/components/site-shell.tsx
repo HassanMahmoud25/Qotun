@@ -48,6 +48,11 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const focusedAccount = pathname === "/account/create";
   const focusedCheckout = pathname === "/checkout";
+  const adminArea = pathname.startsWith("/admin");
+
+  if (adminArea) {
+    return <>{children}</>;
+  }
 
   if (focusedAccount) {
     return (

@@ -251,7 +251,9 @@ export function ProductDetail({ product }: { product: Product }) {
         >
           <span aria-hidden="true">{compared ? "✓" : "+"}</span>
           <span>
-            <strong>{compared ? "Added to comparison" : "Compare this piece"}</strong>
+            <strong>
+              {compared ? "Added to comparison" : "Compare this piece"}
+            </strong>
             <small>
               {compared
                 ? "We’ll keep it ready while you browse."
