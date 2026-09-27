@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import Image from "@/components/cdn-image";
 import { useState } from "react";
 import { ArrowIcon, HeartIcon, MinusIcon, PlusIcon } from "@/components/icons";
 import { useStore } from "@/components/store-provider";

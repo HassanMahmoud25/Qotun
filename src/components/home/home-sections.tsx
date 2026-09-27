@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "@/components/cdn-image";
 import Link from "next/link";
 import { CategoryCarousel } from "@/components/category-carousel";
 import { ArrowIcon, CheckIcon } from "@/components/icons";

@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import Image from "@/components/cdn-image";
 import Link from "next/link";
 import { HeartIcon } from "@/components/icons";
 import { useStore } from "@/components/store-provider";

@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import Image from "@/components/cdn-image";
 import { type FormEvent, useState } from "react";
 import { motion } from "framer-motion";
 import { ChevronIcon, CloseIcon } from "@/components/icons";

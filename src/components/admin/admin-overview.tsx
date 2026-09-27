@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import Image from "@/components/cdn-image";
 import { ChevronIcon, MoreIcon } from "@/components/icons";
 import { products } from "@/lib/data";
 import {
