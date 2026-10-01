@@ -60,6 +60,9 @@
 }
 .quick-view__slide img {
   object-fit: cover;
+  /* Zoom-out: a longer, gently decelerating return to scale(1). */
+  transition: transform 300ms cubic-bezier(0.22, 0.61, 0.36, 1);
+  will-change: transform;
 }
 .quick-view__slide.is-zoomed {
   cursor: zoom-out;

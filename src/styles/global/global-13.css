@@ -43,7 +43,8 @@
 }
 .product-gallery__slide img {
   object-fit: cover;
-  transition: transform 250ms ease;
+  /* Zoom-out: a longer, gently decelerating return to scale(1). */
+  transition: transform 300ms cubic-bezier(0.22, 0.61, 0.36, 1);
   will-change: transform;
 }
 .product-gallery__controls {
